@@ -1,0 +1,97 @@
+/**
+ * Penyesuaian warna Vuexy ke identitas Dekorasi.me (emas/bronze).
+ * Dimuat setelah core.css sehingga menimpa variabel bawaan template.
+ */
+:root,
+[data-bs-theme='light'],
+[data-bs-theme='dark'] {
+  --dm-gold: #d9a441;
+  --dm-gold-lite: #f3d48a;
+  --dm-gold-deep: #a97a22;
+
+  --bs-primary: #a97a22;
+  --bs-primary-rgb: 169, 122, 34;
+  --bs-primary-text-emphasis: #5a4012;
+  --bs-primary-bg-subtle: #f7efdf;
+  --bs-primary-border-subtle: #e6cf9f;
+}
+
+[data-bs-theme='dark'] {
+  --bs-primary: #d9a441;
+  --bs-primary-rgb: 217, 164, 65;
+  --bs-primary-text-emphasis: #f3d48a;
+  --bs-primary-bg-subtle: #3a2f18;
+  --bs-primary-border-subtle: #5c4a24;
+}
+
+/* Logo brand di sidebar */
+.app-brand-logo img {
+  width: 34px;
+  height: auto;
+}
+
+/* Kartu statistik dashboard */
+.stat-card .stat-icon {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  font-size: 1.35rem;
+}
+
+/* Pratinjau gambar pada form */
+.image-preview {
+  display: block;
+  max-width: 220px;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--bs-border-color);
+  background: var(--bs-body-bg);
+}
+
+/* Galeri foto proyek */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--bs-border-color);
+  background: var(--bs-body-bg);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-item .gallery-actions {
+  position: absolute;
+  inset-inline-end: 6px;
+  inset-block-start: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.gallery-item:hover .gallery-actions {
+  opacity: 1;
+}
+
+.gallery-item .drag-handle {
+  cursor: grab;
+}
+
+.gallery-item.sortable-ghost {
+  opacity: 0.4;
+}
