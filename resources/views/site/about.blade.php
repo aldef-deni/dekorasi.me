@@ -80,39 +80,45 @@
   @if (setting('about.vision') || $misi->isNotEmpty())
     <section style="background:var(--bg-soft);border-block:1px solid var(--line-soft)">
       <div class="wrap">
+        <div class="vm-split">
 
-        <div class="section-head center reveal">
-          <span class="eyebrow">Arah Kami</span>
-          <h2>Visi &amp; <span class="gold-text">Misi</span></h2>
-        </div>
+          {{-- Kolom kiri: Visi --}}
+          @if (setting('about.vision'))
+            <div class="reveal">
+              <div class="vm-lead">Arah Kami</div>
+              <h2 class="vm-title">Visi</h2>
+              <div class="vm-rule"></div>
 
-        @if (setting('about.vision'))
-          <div class="vision reveal">
-            <span class="eyebrow" style="justify-content:center">Visi</span>
-            <p>{{ setting('about.vision') }}</p>
-          </div>
-        @endif
-
-        @if ($misi->isNotEmpty())
-          <div class="section-head center reveal"
-               style="margin-block:clamp(48px,6vw,72px) clamp(28px,4vw,40px)">
-            <span class="eyebrow">Misi</span>
-            <h3 style="font-size:clamp(1.5rem,3vw,2rem)">Cara Kami Mewujudkannya</h3>
-          </div>
-
-          <div class="mission-grid">
-            @foreach ($misi as $poin)
-              <div class="mission-item reveal">
-                <span class="mission-no">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                <h3>{{ $poin['label'] }}</h3>
-                @if ($poin['teks'])
-                  <p>{{ $poin['teks'] }}</p>
-                @endif
+              <div class="vision">
+                <p>{{ setting('about.vision') }}</p>
               </div>
-            @endforeach
-          </div>
-        @endif
+            </div>
+          @endif
 
+          {{-- Kolom kanan: Misi --}}
+          @if ($misi->isNotEmpty())
+            <div class="reveal">
+              <div class="vm-lead">Cara Kami Mewujudkannya</div>
+              <h2 class="vm-title">Misi</h2>
+              <div class="vm-rule"></div>
+
+              <div class="mission-list">
+                @foreach ($misi as $poin)
+                  <div class="mission-item">
+                    <span class="mission-no">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                    <div>
+                      <h3>{{ $poin['label'] }}</h3>
+                      @if ($poin['teks'])
+                        <p>{{ $poin['teks'] }}</p>
+                      @endif
+                    </div>
+                  </div>
+                @endforeach
+              </div>
+            </div>
+          @endif
+
+        </div>
       </div>
     </section>
   @endif

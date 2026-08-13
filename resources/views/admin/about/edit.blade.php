@@ -51,9 +51,31 @@
             </div>
             <div class="mb-0">
               <label class="form-label" for="about_mission">Misi</label>
-              <textarea class="form-control" id="about_mission" name="about_mission" rows="5"
-                        placeholder="Tulis satu misi per baris.">{{ old('about_mission', setting('about.mission')) }}</textarea>
-              <div class="form-text">Tulis satu poin misi per baris — akan ditampilkan sebagai daftar.</div>
+              <textarea class="form-control" id="about_mission" name="about_mission" rows="7"
+                        placeholder="Kualitas Prima : Menyediakan produk furnitur dengan standar material terbaik.&#10;Inovasi Desain : Terus beradaptasi dengan tren desain global.">{{ old('about_mission', setting('about.mission')) }}</textarea>
+              <div class="form-text">
+                Satu poin per baris. Gunakan format <code>Judul : Penjelasan</code> —
+                bagian sebelum titik dua menjadi judul poin, sisanya menjadi penjelasan.
+                Baris tanpa titik dua tetap tampil, hanya tanpa penjelasan.
+              </div>
+
+              @php $pratinjauMisi = parse_poin(setting('about.mission')); @endphp
+
+              @if ($pratinjauMisi->isNotEmpty())
+                <div class="mt-3 p-3 rounded" style="background:var(--bs-body-bg);border:1px solid var(--bs-border-color)">
+                  <p class="mb-2 small text-body-secondary">Pratinjau tampilan di website:</p>
+                  <ol class="mb-0 ps-3 small">
+                    @foreach ($pratinjauMisi as $poin)
+                      <li class="mb-1">
+                        <strong>{{ $poin['label'] }}</strong>
+                        @if ($poin['teks'])
+                          <span class="text-body-secondary">— {{ $poin['teks'] }}</span>
+                        @endif
+                      </li>
+                    @endforeach
+                  </ol>
+                </div>
+              @endif
             </div>
           </div>
         </div>

@@ -495,30 +495,63 @@ section {
 
 /* ============================ Visi & Misi ============================ */
 
-/* Visi — pernyataan tunggal, ditampilkan besar seperti kutipan */
+/* Dua kolom berdampingan: Visi sebagai pernyataan di kiri,
+   Misi sebagai daftar bernomor di kanan. */
+.vm-split {
+  display: grid;
+  grid-template-columns: 0.86fr 1.14fr;
+  gap: clamp(40px, 6vw, 84px);
+  align-items: start;
+}
+
+/* Judul besar bergaya display, menggantikan label kecil sebelumnya */
+.vm-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.05;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.vm-lead {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.vm-rule {
+  width: 68px;
+  height: 2px;
+  margin-bottom: 28px;
+  background: linear-gradient(90deg, var(--gold), rgba(184, 134, 47, 0));
+}
+
+/* --- Kolom kiri: Visi --- */
+
 .vision {
   position: relative;
-  max-width: 900px;
-  margin-inline: auto;
-  padding: clamp(36px, 5vw, 56px) clamp(28px, 5vw, 64px);
+  padding: clamp(32px, 4vw, 44px) clamp(26px, 3vw, 38px);
   border: 1px solid var(--line);
   border-radius: 20px;
-  text-align: center;
   background:
-    radial-gradient(circle 460px at 50% 0%, rgba(217, 164, 65, 0.12), transparent 70%),
+    radial-gradient(circle 420px at 12% 0%, rgba(217, 164, 65, 0.14), transparent 70%),
     var(--bg-card);
   box-shadow: var(--shadow-sm);
 }
 
-/* Tanda kutip dekoratif */
+/* Tanda kutip dekoratif — diletakkan di sudut kanan atas agar tidak
+   menimpa garis emas di bawah judul "Visi". */
 .vision::before {
   content: '\201C';
   position: absolute;
-  inset-block-start: -18px;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-  width: 58px;
-  height: 58px;
+  inset-block-start: -20px;
+  inset-inline-end: 30px;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -526,70 +559,77 @@ section {
   background: linear-gradient(135deg, var(--gold-lite), var(--gold-deep));
   color: #fff;
   font-family: var(--font-display);
-  font-size: 3.2rem;
+  font-size: 3rem;
   line-height: 1;
-  padding-block-start: 24px;
+  padding-block-start: 22px;
   box-shadow: 0 8px 22px rgba(184, 134, 47, 0.3);
 }
 
 .vision p {
-  margin: 14px 0 0;
+  margin: 10px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+  font-size: clamp(1.22rem, 1.7vw, 1.5rem);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--text);
 }
 
-/* Misi — daftar berlabel dalam kartu bernomor */
-.mission-grid {
+/* --- Kolom kanan: Misi --- */
+
+.mission-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+  gap: 0;
 }
 
 .mission-item {
-  position: relative;
-  padding: 32px 30px 32px 30px;
-  border: 1px solid var(--line-soft);
-  border-radius: 16px;
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+  padding-block: 24px;
+  border-block-end: 1px solid var(--line-soft);
+  transition: border-color 0.3s;
 }
 
-.mission-item:hover {
-  transform: translateY(-4px);
-  border-color: var(--line);
-  box-shadow: var(--shadow-md);
-}
+.mission-item:first-child { padding-block-start: 0; }
+.mission-item:last-child { border-block-end: 0; padding-block-end: 0; }
+.mission-item:hover { border-block-end-color: var(--line); }
 
 .mission-no {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 18px;
-  border-radius: 12px;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
   background: var(--gold-wash);
   border: 1px solid var(--line);
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--gold-deep);
+  transition: background 0.3s, color 0.3s;
+}
+
+.mission-item:hover .mission-no {
+  background: linear-gradient(135deg, var(--gold-lite), var(--gold-deep));
+  color: #fff;
 }
 
 .mission-item h3 {
-  font-size: 1.28rem;
-  margin-bottom: 8px;
+  font-size: 1.3rem;
+  margin-bottom: 6px;
 }
 
 .mission-item p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.94rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.72;
+}
+
+@media (max-width: 880px) {
+  .vm-split { grid-template-columns: 1fr; gap: 52px; }
 }
 
 /* ============================ Paket layanan ============================ */
