@@ -1,0 +1,226 @@
+/**
+ * Halaman masuk administrator Dekorasi.me.
+ *
+ * Layout ditulis sendiri (tidak memakai .authentication-cover bawaan Vuexy)
+ * agar tingginya pasti setinggi layar. Komponen form tetap memakai core.css
+ * Vuexy sehingga gaya input & tombol konsisten dengan dashboard.
+ */
+
+:root {
+  --auth-ivory: #fbfaf7;
+  --auth-ivory-deep: #f1ece1;
+  --auth-gold: #b8862f;
+  --auth-gold-lite: #d9a441;
+  --auth-gold-deep: #8a6318;
+  --auth-ink: #211f1c;
+  --auth-muted: #7c756b;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body.auth-page {
+  margin: 0;
+  background: var(--auth-ivory);
+  color: var(--auth-ink);
+  overflow-x: hidden;
+}
+
+.auth-shell {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Track "fr" bawaannya min-width:auto sehingga bisa melebihi lebar layar
+   bila ada isi yang tak mau menyusut. min-width:0 mengizinkannya mengecil. */
+.auth-shell > * {
+  min-width: 0;
+}
+
+/* ------------------------- Panel merek (kiri) ------------------------- */
+
+.auth-brand {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 56px;
+  overflow: hidden;
+  text-align: center;
+  background:
+    radial-gradient(circle 560px at 50% 34%, rgba(217, 164, 65, 0.22), transparent 68%),
+    linear-gradient(150deg, #fdfcfa 0%, var(--auth-ivory-deep) 100%);
+  border-inline-end: 1px solid rgba(184, 134, 47, 0.2);
+}
+
+/* Grid halus bernuansa cetak biru arsitektur */
+.auth-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(184, 134, 47, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 134, 47, 0.09) 1px, transparent 1px);
+  background-size: 78px 78px;
+  mask-image: radial-gradient(ellipse 70% 64% at 50% 45%, #000 22%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 64% at 50% 45%, #000 22%, transparent 78%);
+}
+
+.auth-brand > * { position: relative; z-index: 1; }
+
+.auth-brand img {
+  width: min(230px, 46%);
+  height: auto;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 18px 44px rgba(184, 134, 47, 0.32));
+}
+
+.auth-brand h1 {
+  margin: 0 0 12px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.9rem, 2.6vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--auth-gold-deep);
+}
+
+.auth-brand p {
+  margin: 0;
+  max-width: 40ch;
+  color: var(--auth-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.auth-brand .auth-rule {
+  width: 54px;
+  height: 2px;
+  margin: 24px auto 0;
+  background: linear-gradient(90deg, transparent, var(--auth-gold), transparent);
+}
+
+/* ------------------------- Panel form (kanan) ------------------------- */
+
+.auth-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  background: #fff;
+}
+
+/* Lebar dipatok relatif viewport agar tidak pernah melebihi layar,
+   berapa pun lebar induknya. */
+.auth-form {
+  width: min(400px, 100vw - 48px);
+  margin-inline: auto;
+}
+
+.auth-form .auth-logo-sm {
+  display: none;
+  width: 92px;
+  margin: 0 auto 28px;
+}
+
+.auth-form .auth-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--auth-gold);
+}
+
+.auth-form .auth-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--auth-gold);
+  opacity: 0.7;
+}
+
+.auth-form h2 {
+  margin: 0 0 8px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: var(--auth-ink);
+}
+
+.auth-form .auth-sub {
+  margin: 0 0 32px;
+  color: var(--auth-muted);
+  font-size: 0.95rem;
+}
+
+/* Tombol utama memakai emas merek, bukan ungu bawaan Vuexy */
+.auth-form .btn-auth {
+  width: 100%;
+  padding-block: 13px;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--auth-gold-lite) 0%, var(--auth-gold-deep) 100%);
+  box-shadow: 0 10px 24px rgba(184, 134, 47, 0.3);
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+
+.auth-form .btn-auth:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 32px rgba(184, 134, 47, 0.38);
+  color: #fff;
+}
+
+.auth-form .btn-auth:active { transform: scale(0.99); }
+
+.auth-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 28px;
+  font-size: 0.88rem;
+  color: var(--auth-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.auth-back:hover { color: var(--auth-gold-deep); }
+
+/* ------------------------- Responsif ------------------------- */
+
+@media (max-width: 991px) {
+  .auth-shell { grid-template-columns: 1fr; }
+
+  /* Panel merek disembunyikan; logonya muncul di atas form */
+  .auth-brand { display: none; }
+
+  .auth-form .auth-logo-sm { display: block; }
+
+  .auth-form-side {
+    padding: 40px 24px calc(40px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(circle 420px at 50% 12%, rgba(217, 164, 65, 0.16), transparent 70%),
+      #fff;
+  }
+}
+
+@media (max-width: 420px) {
+  .auth-form h2 { font-size: 1.8rem; }
+  .auth-form .auth-logo-sm { width: 78px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-form .btn-auth { transition: none; }
+}

@@ -41,7 +41,10 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            // Struktur project diratakan (tanpa folder "public"), sehingga nama
+            // "storage" sudah dipakai folder framework. Symlink publik memakai
+            // nama "uploads" agar tidak bentrok. Lihat bagian 'links' di bawah.
+            'url' => env('APP_URL').'/uploads',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -74,7 +77,9 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // Bukan public_path('storage'): public_path() kini menunjuk ke root
+        // project, dan nama "storage" di sana sudah dipakai folder framework.
+        base_path('uploads') => storage_path('app/public'),
     ],
 
 ];

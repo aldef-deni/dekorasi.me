@@ -1,0 +1,93 @@
+# =============================================================================
+# Dekorasi.me — .htaccess root project
+#
+# Struktur project ini diratakan: isi folder "public" dipindahkan ke root,
+# sehingga URL tidak pernah mengandung "/public". Konsekuensinya folder
+# aplikasi (app/, config/, vendor/, .env, dst.) ikut berada di dalam
+# Document Root, jadi blok proteksi di bawah WAJIB ada.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 1. PROTEKSI — harus didahulukan sebelum aturan front controller
+# -----------------------------------------------------------------------------
+
+# Matikan daftar isi direktori
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Blokir akses langsung ke folder internal Laravel.
+    # Catatan: "uploads" (symlink ke storage/app/public) sengaja TIDAK diblokir
+    # karena berisi gambar yang memang harus bisa diakses publik.
+    RewriteRule ^(app|bootstrap|config|database|lang|resources|routes|storage|tests|vendor|node_modules)(/|$) - [F,L]
+
+    # Blokir file sensitif di root project
+    RewriteRule ^(\.env.*|\.git.*|composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|artisan|phpunit\.xml|.*\.md|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js)$ - [F,L]
+</IfModule>
+
+# Lapis kedua bila mod_rewrite tidak aktif
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|artisan|phpunit\.xml|.*\.md|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# -----------------------------------------------------------------------------
+# 2. FRONT CONTROLLER LARAVEL
+# -----------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Teruskan header Authorization
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Teruskan header X-XSRF-Token
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Buang trailing slash bila bukan direktori
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Arahkan sisanya ke front controller
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# -----------------------------------------------------------------------------
+# 3. Cache aset statis (opsional, mempercepat pemuatan halaman)
+# -----------------------------------------------------------------------------
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                "access plus 1 month"
+    ExpiresByType application/javascript  "access plus 1 month"
+    ExpiresByType image/jpeg              "access plus 1 year"
+    ExpiresByType image/png               "access plus 1 year"
+    ExpiresByType image/webp              "access plus 1 year"
+    ExpiresByType image/svg+xml           "access plus 1 year"
+    ExpiresByType font/woff2              "access plus 1 year"
+</IfModule>
