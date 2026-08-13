@@ -578,22 +578,28 @@ section {
 
 .mission-list {
   display: grid;
-  gap: 0;
+  gap: 16px;
 }
 
+/* Tiap misi berupa kartu, senada dengan panel Visi di kolom kiri */
 .mission-item {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 20px;
   align-items: start;
-  padding-block: 24px;
-  border-block-end: 1px solid var(--line-soft);
-  transition: border-color 0.3s;
+  padding: 24px 26px;
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-.mission-item:first-child { padding-block-start: 0; }
-.mission-item:last-child { border-block-end: 0; padding-block-end: 0; }
-.mission-item:hover { border-block-end-color: var(--line); }
+.mission-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--line);
+  box-shadow: var(--shadow-md);
+}
 
 .mission-no {
   display: inline-flex;
