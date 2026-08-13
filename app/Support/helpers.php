@@ -42,6 +42,17 @@ if (! function_exists('upload_url')) {
     }
 }
 
+if (! function_exists('banner_url')) {
+    /**
+     * URL banner untuk sebuah halaman ('about', 'services', 'projects', 'contact').
+     * Lihat App\Support\Banner untuk urutan penentuannya.
+     */
+    function banner_url(string $page): string
+    {
+        return \App\Support\Banner::url($page);
+    }
+}
+
 if (! function_exists('parse_poin')) {
     /**
      * Ubah teks multi-baris menjadi daftar poin berlabel.

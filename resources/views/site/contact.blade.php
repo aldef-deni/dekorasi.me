@@ -5,7 +5,7 @@
 
 @section('content')
 
-  <section class="page-hero">
+  <section class="page-hero with-image" style="--hero-image:url('{{ banner_url('contact') }}')">
     <div class="wrap">
       <div class="breadcrumbs">
         <a href="{{ route('home') }}">Beranda</a> <span>/</span> <span>Kontak</span>

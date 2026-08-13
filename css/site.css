@@ -961,11 +961,25 @@ section {
 
 .page-hero {
   position: relative;
+  /* Wajib: lapisan foto diperbesar scale(1.04) untuk animasi zoom, tanpa ini
+     luapannya terlihat sebagai pita gambar di bawah banner. */
+  overflow: hidden;
   padding-block: clamp(64px, 8vw, 104px);
   border-bottom: 1px solid var(--line-soft);
   background:
     radial-gradient(circle 520px at 82% 25%, rgba(217, 164, 65, 0.16), transparent 68%),
     var(--bg-soft);
+}
+
+/* Banner berfoto: cukup tinggi agar terbaca sebagai banner, dengan selubung
+   terang di sisi kiri supaya teks gelap tetap jelas di atas foto apa pun. */
+.page-hero.with-image {
+  min-height: clamp(300px, 40vh, 440px);
+  display: flex;
+  align-items: center;
+  /* Peralihan ke bawah sudah ditangani gradien; border malah menyisakan
+     garis potong yang tegas. */
+  border-bottom: 0;
 }
 
 .page-hero.with-image::before {
@@ -975,18 +989,25 @@ section {
   background-image: var(--hero-image);
   background-size: cover;
   background-position: center;
+  transform: scale(1.04);
+  animation: heroZoom 18s ease-out forwards;
 }
 
 .page-hero.with-image::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    100deg,
-    rgba(251, 250, 247, 0.97) 0%,
-    rgba(251, 250, 247, 0.88) 40%,
-    rgba(251, 250, 247, 0.55) 100%
-  );
+  background:
+    /* Peralihan halus ke warna halaman di bagian bawah */
+    linear-gradient(to top, var(--bg) 0%, rgba(251, 250, 247, 0) 34%),
+    /* Selubung utama dari kiri */
+    linear-gradient(
+      100deg,
+      rgba(251, 250, 247, 0.97) 0%,
+      rgba(251, 250, 247, 0.9) 38%,
+      rgba(251, 250, 247, 0.5) 72%,
+      rgba(251, 250, 247, 0.22) 100%
+    );
 }
 
 .page-hero .wrap { position: relative; z-index: 2; }
@@ -1328,6 +1349,19 @@ section {
       rgba(251, 250, 247, 0.86) 55%,
       rgba(251, 250, 247, 0.7) 100%
     );
+  }
+
+  /* Banner halaman: selubung dari atas, bukan dari kiri — di layar sempit
+     teks memakai seluruh lebar sehingga gradien kiri tidak lagi memadai. */
+  .page-hero.with-image::after {
+    background:
+      linear-gradient(to top, var(--bg) 0%, rgba(251, 250, 247, 0) 30%),
+      linear-gradient(
+        180deg,
+        rgba(251, 250, 247, 0.93) 0%,
+        rgba(251, 250, 247, 0.88) 60%,
+        rgba(251, 250, 247, 0.78) 100%
+      );
   }
 
   .split-media.stacked .secondary {

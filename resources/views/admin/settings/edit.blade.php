@@ -112,6 +112,61 @@
           </div>
         </div>
 
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-1">Banner Halaman</h5>
+            <p class="mb-0 text-body-secondary small">
+              Gambar besar di kepala tiap halaman. Ukuran ideal
+              <strong>1920 &times; 800 px</strong>; bagian tengah gambar yang paling terlihat.
+              Bila dikosongkan, banner diambil <strong>otomatis</strong> dari gambar slider
+              dan sampul proyek yang sudah ada &mdash; tiap halaman mendapat gambar berbeda.
+            </p>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              @php
+                  $banners = [
+                      'banner_about'    => ['Tentang Kami',  'banner.about',    'about'],
+                      'banner_services' => ['Paket Layanan', 'banner.services', 'services.index'],
+                      'banner_projects' => ['Portofolio',    'banner.projects', 'projects.index'],
+                      'banner_contact'  => ['Kontak',        'banner.contact',  'contact'],
+                  ];
+              @endphp
+
+              @foreach ($banners as $name => [$label, $key, $routeName])
+                <div class="col-md-6 mb-4">
+                  <label class="form-label d-flex align-items-center justify-content-between" for="{{ $name }}">
+                    <span>{{ $label }}</span>
+                    <a href="{{ route($routeName) }}" target="_blank" rel="noopener"
+                       class="text-body-secondary small text-decoration-none" title="Lihat halaman">
+                      <i class="icon-base ti tabler-external-link icon-16px"></i>
+                    </a>
+                  </label>
+
+                  @php $pageKey = Str::after($key, 'banner.'); @endphp
+
+                  <img id="preview-{{ $name }}" src="{{ banner_url($pageKey) }}"
+                       class="image-preview mb-2" style="max-width:100%;height:110px;object-fit:cover"
+                       alt="Pratinjau banner {{ $label }}" />
+
+                  <input type="file" class="form-control @error($name) is-invalid @enderror"
+                         id="{{ $name }}" name="{{ $name }}" accept="image/*"
+                         data-preview="#preview-{{ $name }}" />
+                  @error($name) <div class="invalid-feedback">{{ $message }}</div> @enderror
+
+                  @unless (setting($key))
+                    <div class="form-text">
+                      {{ \App\Support\Banner::isAutomatic($pageKey)
+                          ? 'Diambil otomatis dari gambar yang sudah ada.'
+                          : 'Memakai gambar bawaan — belum ada slider/proyek bergambar.' }}
+                    </div>
+                  @endunless
+                </div>
+              @endforeach
+            </div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="card-header"><h5 class="mb-0">SEO</h5></div>
           <div class="card-body">

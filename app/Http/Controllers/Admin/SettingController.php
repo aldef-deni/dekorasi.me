@@ -13,7 +13,11 @@ use Illuminate\View\View;
 class SettingController extends Controller
 {
     /** Field bertipe gambar — ditangani terpisah dari field teks. */
-    private const IMAGE_FIELDS = ['site.logo', 'site.logo_dark', 'site.favicon', 'seo.og_image'];
+    private const IMAGE_FIELDS = [
+        'site.logo', 'site.logo_dark', 'site.favicon', 'seo.og_image',
+        // Banner kepala tiap halaman
+        'banner.about', 'banner.services', 'banner.projects', 'banner.contact',
+    ];
 
     public function __construct(private readonly ImageService $images)
     {
@@ -51,6 +55,11 @@ class SettingController extends Controller
             'site_logo_dark' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'site_favicon'   => ['nullable', 'image', 'mimes:png,ico,webp', 'max:512'],
             'seo_og_image'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+
+            'banner_about'    => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
+            'banner_services' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
+            'banner_projects' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
+            'banner_contact'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
         ], [], [
             'site_name'       => 'nama situs',
             'contact_email'   => 'email',
@@ -58,6 +67,10 @@ class SettingController extends Controller
             'site_logo_dark'  => 'logo versi gelap',
             'site_favicon'    => 'favicon',
             'seo_og_image'    => 'gambar share',
+            'banner_about'    => 'banner Tentang Kami',
+            'banner_services' => 'banner Paket Layanan',
+            'banner_projects' => 'banner Portofolio',
+            'banner_contact'  => 'banner Kontak',
         ]);
 
         // Nama input "site_name" dipetakan ke key setting "site.name"

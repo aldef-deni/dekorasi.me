@@ -5,8 +5,7 @@
 
 @section('content')
 
-  <section class="page-hero {{ setting('about.image') ? 'with-image' : '' }}"
-           @if (setting('about.image')) style="--hero-image:url('{{ upload_url(setting('about.image')) }}')" @endif>
+  <section class="page-hero with-image" style="--hero-image:url('{{ banner_url('about') }}')">
     <div class="wrap">
       <div class="breadcrumbs">
         <a href="{{ route('home') }}">Beranda</a> <span>/</span> <span>Tentang Kami</span>
