@@ -53,21 +53,21 @@
         <ul>
           <li><a href="{{ route('home') }}">Beranda</a></li>
           <li><a href="{{ route('about') }}">Tentang Kami</a></li>
-          <li><a href="{{ route('services.index') }}">Layanan</a></li>
+          <li><a href="{{ route('services.index') }}">Paket Layanan</a></li>
           <li><a href="{{ route('projects.index') }}">Portofolio</a></li>
           <li><a href="{{ route('contact') }}">Kontak</a></li>
         </ul>
       </div>
 
       <div>
-        <h4>Layanan</h4>
+        <h4>Paket Layanan</h4>
         <ul>
           @forelse ($footerServices as $service)
             <li><a href="{{ route('services.show', $service) }}">{{ $service->title }}</a></li>
           @empty
-            <li>Desain Interior</li>
-            <li>Visualisasi 3D</li>
-            <li>Furnitur Custom</li>
+            <li>Paket Silver</li>
+            <li>Paket Gold</li>
+            <li>Paket Platinum</li>
           @endforelse
         </ul>
       </div>

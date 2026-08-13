@@ -5,47 +5,77 @@
 
 @section('content')
 
+  @php $fitur = $service->featureList(); @endphp
+
   <section class="page-hero {{ $service->image ? 'with-image' : '' }}"
            @if ($service->image) style="--hero-image:url('{{ upload_url($service->image) }}')" @endif>
     <div class="wrap">
       <div class="breadcrumbs">
         <a href="{{ route('home') }}">Beranda</a> <span>/</span>
-        <a href="{{ route('services.index') }}">Layanan</a> <span>/</span>
+        <a href="{{ route('services.index') }}">Paket Layanan</a> <span>/</span>
         <span>{{ $service->title }}</span>
       </div>
-      <span class="eyebrow">Layanan</span>
+      <span class="eyebrow">{{ $service->subtitle ?: 'Paket Layanan' }}</span>
       <h1 class="gold-text">{{ $service->title }}</h1>
       @if ($service->excerpt)
         <p class="lead" style="margin-top:1.2rem">{{ $service->excerpt }}</p>
+      @endif
+      @if ($service->price)
+        <p class="lead" style="margin-top:.6rem;color:var(--gold-deep);font-weight:600">{{ $service->price }}</p>
       @endif
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="prose reveal">
-        @forelse (preg_split('/\R{2,}/', trim((string) $service->description)) as $paragraph)
-          @if (trim($paragraph) !== '')
-            <p>{{ $paragraph }}</p>
+      <div class="split" style="align-items:start">
+
+        {{-- Isi paket --}}
+        @if ($fitur->isNotEmpty())
+          <div class="reveal">
+            <span class="eyebrow">Yang Anda Dapatkan</span>
+            <ul class="pkg-features" style="margin-top:1.2rem;margin-bottom:0">
+              @foreach ($fitur as $poin)
+                <li>{{ $poin }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
+        {{-- Penjelasan --}}
+        <div class="reveal">
+          @if ($service->description)
+            <span class="eyebrow">Tentang Paket Ini</span>
+            <div class="prose" style="margin-top:1.2rem">
+              @foreach (preg_split('/\R{2,}/', trim($service->description)) as $paragraph)
+                @if (trim($paragraph) !== '')
+                  <p>{{ $paragraph }}</p>
+                @endif
+              @endforeach
+            </div>
+          @elseif ($fitur->isEmpty())
+            <p class="lead">Detail paket ini sedang kami lengkapi. Hubungi kami untuk penjelasan langsung.</p>
           @endif
-        @empty
-          <p>Detail layanan ini sedang kami lengkapi. Hubungi kami untuk penjelasan langsung.</p>
-        @endforelse
+
+          @if (setting('contact.whatsapp'))
+            <a class="btn btn-gold" style="margin-top:1.4rem"
+               href="{{ whatsapp_url(setting('contact.whatsapp'), 'Halo ' . setting('site.name', 'Dekorasi.me') . ', saya tertarik dengan ' . $service->title . '.') }}"
+               target="_blank" rel="noopener">
+              Tanya Paket Ini
+            </a>
+          @endif
+        </div>
       </div>
 
       @if ($others->isNotEmpty())
-        <div style="margin-top:72px">
-          <h3 style="margin-bottom:24px">Layanan Lainnya</h3>
-          <div class="grid grid-3">
+        <div style="margin-top:80px">
+          <div class="section-head reveal" style="margin-bottom:28px">
+            <span class="eyebrow">Bandingkan</span>
+            <h2>Paket Lainnya</h2>
+          </div>
+          <div class="pkg-grid">
             @foreach ($others as $other)
-              <a href="{{ route('services.show', $other) }}" class="card-service reveal">
-                <h3 style="font-size:1.2rem">{{ $other->title }}</h3>
-                <p>{{ Str::limit($other->excerpt ?: strip_tags($other->description), 100) }}</p>
-                <span class="card-link">
-                  Selengkapnya
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
-              </a>
+              @include('site.partials.package-card', ['service' => $other])
             @endforeach
           </div>
         </div>

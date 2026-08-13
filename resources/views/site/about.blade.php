@@ -75,40 +75,44 @@
     </section>
   @endif
 
-  @if (setting('about.vision') || setting('about.mission'))
-    <section>
-      <div class="wrap">
-        <div class="grid grid-2">
-          @if (setting('about.vision'))
-            <div class="card-service reveal">
-              <span class="icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="26" height="26">
-                  <path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.6"/>
-                </svg>
-              </span>
-              <h3>Visi</h3>
-              <p style="font-size:1rem">{{ setting('about.vision') }}</p>
-            </div>
-          @endif
+  @php $misi = parse_poin(setting('about.mission')); @endphp
 
-          @if (setting('about.mission'))
-            <div class="card-service reveal">
-              <span class="icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="26" height="26">
-                  <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>
-                </svg>
-              </span>
-              <h3>Misi</h3>
-              <ul style="color:var(--muted);font-size:.95rem;padding-inline-start:1.1rem;margin:0">
-                @foreach (preg_split('/\R+/', trim(setting('about.mission'))) as $mission)
-                  @if (trim($mission) !== '')
-                    <li style="margin-bottom:.5rem">{{ trim($mission) }}</li>
-                  @endif
-                @endforeach
-              </ul>
-            </div>
-          @endif
+  @if (setting('about.vision') || $misi->isNotEmpty())
+    <section style="background:var(--bg-soft);border-block:1px solid var(--line-soft)">
+      <div class="wrap">
+
+        <div class="section-head center reveal">
+          <span class="eyebrow">Arah Kami</span>
+          <h2>Visi &amp; <span class="gold-text">Misi</span></h2>
         </div>
+
+        @if (setting('about.vision'))
+          <div class="vision reveal">
+            <span class="eyebrow" style="justify-content:center">Visi</span>
+            <p>{{ setting('about.vision') }}</p>
+          </div>
+        @endif
+
+        @if ($misi->isNotEmpty())
+          <div class="section-head center reveal"
+               style="margin-block:clamp(48px,6vw,72px) clamp(28px,4vw,40px)">
+            <span class="eyebrow">Misi</span>
+            <h3 style="font-size:clamp(1.5rem,3vw,2rem)">Cara Kami Mewujudkannya</h3>
+          </div>
+
+          <div class="mission-grid">
+            @foreach ($misi as $poin)
+              <div class="mission-item reveal">
+                <span class="mission-no">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                <h3>{{ $poin['label'] }}</h3>
+                @if ($poin['teks'])
+                  <p>{{ $poin['teks'] }}</p>
+                @endif
+              </div>
+            @endforeach
+          </div>
+        @endif
+
       </div>
     </section>
   @endif

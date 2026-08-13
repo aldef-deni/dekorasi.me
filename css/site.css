@@ -493,6 +493,259 @@ section {
 .card-service:hover .card-link svg,
 .card-link:hover svg { transform: translateX(4px); }
 
+/* ============================ Visi & Misi ============================ */
+
+/* Visi — pernyataan tunggal, ditampilkan besar seperti kutipan */
+.vision {
+  position: relative;
+  max-width: 900px;
+  margin-inline: auto;
+  padding: clamp(36px, 5vw, 56px) clamp(28px, 5vw, 64px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  text-align: center;
+  background:
+    radial-gradient(circle 460px at 50% 0%, rgba(217, 164, 65, 0.12), transparent 70%),
+    var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Tanda kutip dekoratif */
+.vision::before {
+  content: '\201C';
+  position: absolute;
+  inset-block-start: -18px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-lite), var(--gold-deep));
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  line-height: 1;
+  padding-block-start: 24px;
+  box-shadow: 0 8px 22px rgba(184, 134, 47, 0.3);
+}
+
+.vision p {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Misi — daftar berlabel dalam kartu bernomor */
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.mission-item {
+  position: relative;
+  padding: 32px 30px 32px 30px;
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.mission-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--line);
+  box-shadow: var(--shadow-md);
+}
+
+.mission-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: var(--gold-wash);
+  border: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gold-deep);
+}
+
+.mission-item h3 {
+  font-size: 1.28rem;
+  margin-bottom: 8px;
+}
+
+.mission-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+
+/* ============================ Paket layanan ============================ */
+
+.pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+
+.pkg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 40px 34px 34px;
+  border: 1px solid var(--line-soft);
+  border-radius: 18px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.pkg:hover {
+  transform: translateY(-6px);
+  border-color: var(--line);
+  box-shadow: var(--shadow-md);
+}
+
+/* Paket unggulan — disorot dengan bingkai emas & sedikit lebih tinggi */
+.pkg.featured {
+  border-color: var(--gold);
+  box-shadow: 0 18px 46px rgba(184, 134, 47, 0.18);
+  background: linear-gradient(180deg, #fffdf8 0%, var(--bg-card) 46%);
+}
+
+.pkg.featured::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 26px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-lite), var(--gold), transparent);
+}
+
+.pkg-badge {
+  position: absolute;
+  inset-block-start: -13px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold-lite), var(--gold-deep));
+  color: #fff;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(184, 134, 47, 0.32);
+}
+
+.pkg-icon {
+  width: 54px;
+  height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  background: var(--gold-wash);
+  border: 1px solid var(--line);
+  color: var(--gold-deep);
+}
+
+.pkg-name {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.pkg-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.pkg-excerpt {
+  color: var(--muted);
+  font-size: 0.93rem;
+  margin-bottom: 20px;
+}
+
+.pkg-price {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--gold-deep);
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* Daftar isi paket */
+.pkg-features {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  display: grid;
+  gap: 13px;
+  flex-grow: 1;
+}
+
+.pkg-features li {
+  position: relative;
+  padding-inline-start: 30px;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.pkg-features li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 3px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--gold-wash);
+  border: 1px solid var(--line);
+}
+
+/* Tanda centang */
+.pkg-features li::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 6px;
+  inset-block-start: 8px;
+  width: 7px;
+  height: 4px;
+  border-inline-start: 1.8px solid var(--gold-deep);
+  border-block-end: 1.8px solid var(--gold-deep);
+  transform: rotate(-45deg);
+}
+
+.pkg .btn { width: 100%; }
+
 /* ============================ Portofolio ============================ */
 
 .project-grid {

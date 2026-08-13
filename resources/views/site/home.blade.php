@@ -47,31 +47,22 @@
     @endif
   </section>
 
-  {{-- ============================ Layanan ============================ --}}
+  {{-- ============================ Paket layanan ============================ --}}
   @if ($services->isNotEmpty())
     <section id="layanan">
       <div class="wrap">
         <div class="section-head center reveal">
-          <span class="eyebrow">Apa yang Kami Kerjakan</span>
-          <h2>Layanan <span class="gold-text">Desain Interior</span></h2>
+          <span class="eyebrow">Pilih Sesuai Kebutuhan</span>
+          <h2>Paket <span class="gold-text">Layanan</span></h2>
           <p class="lead" style="margin-inline:auto">
-            Setiap ruang punya kebutuhan berbeda. Kami mendampingi dari ide pertama sampai serah terima.
+            Pilihan paket fleksibel yang dapat disesuaikan dengan kebutuhan dan
+            anggaran proyek Anda.
           </p>
         </div>
 
-        <div class="grid grid-3">
+        <div class="pkg-grid">
           @foreach ($services as $service)
-            <a href="{{ route('services.show', $service) }}" class="card-service reveal">
-              <span class="icon">
-                @include('site.partials.service-icon', ['icon' => $service->icon])
-              </span>
-              <h3>{{ $service->title }}</h3>
-              <p>{{ $service->excerpt ?: Str::limit(strip_tags($service->description), 120) }}</p>
-              <span class="card-link">
-                Selengkapnya
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </span>
-            </a>
+            @include('site.partials.package-card', ['service' => $service])
           @endforeach
         </div>
       </div>

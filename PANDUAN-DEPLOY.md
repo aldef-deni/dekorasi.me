@@ -75,11 +75,29 @@ php artisan migrate:status
 ```
 
 Semua migrasi harus berstatus `Ran`, termasuk `2026_08_12_000001` sampai
-`2026_08_12_000006`. Kalau migrasi tersebut tidak muncul, berarti folder
+`2026_08_12_000006` dan `2026_08_14_000001`. Kalau migrasi tersebut tidak muncul, berarti folder
 `database/migrations/` belum ikut terunggah.
 
-Seeder mengisi: akun admin, pengaturan situs, 2 slide, 6 layanan, dan 6 contoh
-proyek. Seeder aman dijalankan ulang — data yang sudah Anda ubah tidak tertimpa.
+Seeder mengisi: akun admin, pengaturan situs, 2 slide, 3 paket layanan
+(Silver / Gold / Platinum), dan 6 contoh proyek. Seeder aman dijalankan ulang —
+data yang sudah Anda ubah tidak tertimpa.
+
+### Memperbarui server yang sudah berjalan
+
+Kalau database di server sudah terisi versi sebelumnya (masih berupa "Layanan",
+belum "Paket Layanan"), jalankan dua perintah ini:
+
+```bash
+php artisan migrate --force
+php artisan db:seed --class=PaketLayananSeeder --force
+```
+
+Perintah pertama menambah kolom paket (keterangan, isi paket, harga, penanda
+unggulan). Perintah kedua mengisi tiga paket Silver, Gold, dan Platinum.
+
+> Aman diulang: paket dicocokkan lewat slug, jadi diperbarui — bukan
+> digandakan. Layanan lama di luar ketiga paket itu **dinonaktifkan, bukan
+> dihapus**, sehingga datanya tetap ada dan bisa diaktifkan lagi dari dashboard.
 
 ### Akun admin bawaan
 
@@ -245,7 +263,7 @@ Kembalikan ke isi semula saat pindah ke domain produksi.
 ## Modul yang bisa diatur dari dashboard
 
 - **Slider Beranda** — gambar & teks besar di bagian atas halaman depan
-- **Layanan** — daftar jasa, ikon, ringkasan, deskripsi lengkap
+- **Paket Layanan** — Silver/Gold/Platinum: nama, keterangan, isi paket (satu poin per baris), harga, ikon, penanda unggulan
 - **Proyek** — portofolio + galeri multi-foto (urutan bisa digeser drag & drop)
 - **Tentang Kami** — profil, visi, misi, 4 angka pencapaian, 2 gambar
 - **Pengaturan Situs** — logo, favicon, kontak, WhatsApp, sosial media, SEO

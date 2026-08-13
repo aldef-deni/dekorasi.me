@@ -1,19 +1,20 @@
 @extends('layouts.site')
 
-@section('meta-title', 'Layanan Desain Interior — ' . setting('site.name', 'Dekorasi.me'))
-@section('meta-description', 'Layanan desain interior lengkap: konsep, visualisasi 3D, furnitur custom, hingga pengawasan pengerjaan.')
+@section('meta-title', 'Paket Layanan Desain Interior — ' . setting('site.name', 'Dekorasi.me'))
+@section('meta-description', 'Pilihan paket desain interior yang fleksibel: Silver (design only), Gold (design + furnitur custom), dan Platinum (full turn-key solution).')
 
 @section('content')
 
   <section class="page-hero">
     <div class="wrap">
       <div class="breadcrumbs">
-        <a href="{{ route('home') }}">Beranda</a> <span>/</span> <span>Layanan</span>
+        <a href="{{ route('home') }}">Beranda</a> <span>/</span> <span>Paket Layanan</span>
       </div>
-      <span class="eyebrow">Apa yang Kami Kerjakan</span>
-      <h1 class="gold-text">Layanan Kami</h1>
+      <span class="eyebrow">Pilih Sesuai Kebutuhan</span>
+      <h1 class="gold-text">Paket Layanan</h1>
       <p class="lead" style="margin-top:1.2rem">
-        Dari perencanaan awal hingga ruang siap dihuni — pilih layanan yang sesuai dengan tahap proyek Anda.
+        Kami menyediakan pilihan paket fleksibel yang dapat disesuaikan dengan
+        kebutuhan dan anggaran proyek Anda.
       </p>
     </div>
   </section>
@@ -21,23 +22,18 @@
   <section>
     <div class="wrap">
       @if ($services->isEmpty())
-        <p class="lead" style="text-align:center">Daftar layanan sedang kami siapkan.</p>
+        <p class="lead" style="text-align:center">Daftar paket sedang kami siapkan.</p>
       @else
-        <div class="grid grid-3">
+        <div class="pkg-grid">
           @foreach ($services as $service)
-            <a href="{{ route('services.show', $service) }}" class="card-service reveal">
-              <span class="icon">
-                @include('site.partials.service-icon', ['icon' => $service->icon])
-              </span>
-              <h3>{{ $service->title }}</h3>
-              <p>{{ $service->excerpt ?: Str::limit(strip_tags($service->description), 140) }}</p>
-              <span class="card-link">
-                Selengkapnya
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </span>
-            </a>
+            @include('site.partials.package-card', ['service' => $service])
           @endforeach
         </div>
+
+        <p class="lead reveal" style="text-align:center;margin:48px auto 0">
+          Belum yakin paket mana yang cocok? Ceritakan kebutuhan Anda —
+          kami bantu memetakan prioritas dan anggarannya.
+        </p>
       @endif
     </div>
   </section>

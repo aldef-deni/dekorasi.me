@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
-use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Slider;
 use App\Models\User;
@@ -17,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->seedAdmin();
         $this->seedSettings();
         $this->seedSliders();
-        $this->seedServices();
+        $this->call(PaketLayananSeeder::class);
         $this->seedProjects();
     }
 
@@ -62,12 +61,14 @@ class DatabaseSeeder extends Seeder
                     'Tim kami terdiri dari desainer, drafter, dan pengawas lapangan yang bekerja dalam satu alur. Artinya, apa yang Anda lihat di visualisasi 3D adalah apa yang akan berdiri di ruangan Anda — tanpa kejutan di tengah jalan.',
                     'Kami memilih material dengan pertimbangan iklim tropis, perawatan jangka panjang, dan anggaran yang realistis. Estetika penting, tapi ruang yang mudah dirawat jauh lebih berharga.',
                 ]),
-                'vision'  => 'Menjadi studio desain interior yang dipercaya karena hasilnya konsisten, bukan karena janjinya.',
+                'vision'  => 'Menjadi perusahaan penyedia solusi interior dan furnitur terpadu yang terpercaya di Indonesia, dengan menghasilkan ruang yang inovatif, fungsional, dan bernilai estetika tinggi bagi setiap generasi.',
+
+                // Format "Label : Penjelasan" — dipisah otomatis oleh parse_poin().
                 'mission' => implode("\n", [
-                    'Merancang ruang yang sesuai kebiasaan dan anggaran klien.',
-                    'Menjaga transparansi biaya dan jadwal dari awal hingga serah terima.',
-                    'Memilih material yang tahan lama dan mudah dirawat.',
-                    'Mengawal pengerjaan di lapangan secara langsung.',
+                    'Kualitas Prima : Menyediakan produk furnitur dan hasil renovasi interior dengan standar material terbaik.',
+                    'Inovasi Desain : Terus beradaptasi dengan tren desain global untuk memberikan konsep yang segar dan kreatif.',
+                    'Kepuasan Klien : Mengutamakan komunikasi yang transparan dan personalisasi desain demi mewujudkan ekspektasi klien.',
+                    'Ketepatan Waktu : Menjaga efisiensi kerja yang profesional agar setiap proyek selesai sesuai jadwal yang disepakati.',
                 ]),
                 'stat1_value' => '120+', 'stat1_label' => 'Proyek Selesai',
                 'stat2_value' => '8',    'stat2_label' => 'Tahun Pengalaman',
@@ -106,7 +107,7 @@ class DatabaseSeeder extends Seeder
                 'title'       => 'Dari Konsep Hingga Serah Terima',
                 'subtitle'    => 'Satu Tim, Satu Tanggung Jawab',
                 'description' => 'Desainer, drafter, dan pengawas lapangan kami bekerja dalam satu alur agar hasilnya sesuai rencana.',
-                'cta_label'   => 'Layanan Kami',
+                'cta_label'   => 'Lihat Paket Layanan',
                 'cta_url'     => '/layanan',
                 'sort_order'  => 2,
             ],
@@ -114,59 +115,6 @@ class DatabaseSeeder extends Seeder
 
         foreach ($slides as $slide) {
             Slider::create($slide);
-        }
-    }
-
-    private function seedServices(): void
-    {
-        if (Service::exists()) {
-            return;
-        }
-
-        $services = [
-            [
-                'title'   => 'Desain Interior Residensial',
-                'icon'    => 'tabler-home',
-                'excerpt' => 'Rumah, apartemen, dan hunian pribadi yang dirancang mengikuti kebiasaan penghuninya.',
-                'description' => "Kami merancang interior hunian mulai dari tata ruang, pemilihan material, pencahayaan, hingga detail furnitur.\n\nProses dimulai dengan survei lokasi dan wawancara kebutuhan: berapa penghuni, bagaimana rutinitas harian, dan gaya seperti apa yang Anda sukai. Hasilnya berupa denah tata ruang, moodboard material, serta visualisasi 3D sebelum satu paku pun dipasang.",
-            ],
-            [
-                'title'   => 'Desain Interior Komersial',
-                'icon'    => 'tabler-building-store',
-                'excerpt' => 'Kantor, kafe, retail, dan ruang usaha yang mendukung alur kerja sekaligus citra merek.',
-                'description' => "Ruang komersial punya tuntutan berbeda: sirkulasi pengunjung, daya tahan material, dan identitas merek harus berjalan bersamaan.\n\nKami merancang layout yang efisien untuk operasional harian, memilih material yang tahan pemakaian intensif, dan memastikan setiap sudut memperkuat citra usaha Anda.",
-            ],
-            [
-                'title'   => 'Visualisasi 3D & Rendering',
-                'icon'    => 'tabler-cube-3d-sphere',
-                'excerpt' => 'Lihat hasil akhir ruangan Anda secara realistis sebelum pengerjaan dimulai.',
-                'description' => "Visualisasi 3D menghilangkan tebak-tebakan. Anda bisa menilai proporsi, warna, dan pencahayaan ruangan sebelum mengeluarkan biaya pengerjaan.\n\nKami menyediakan render foto-realistis dari beberapa sudut pandang, lengkap dengan simulasi pencahayaan siang dan malam.",
-            ],
-            [
-                'title'   => 'Furnitur Custom',
-                'icon'    => 'tabler-armchair',
-                'excerpt' => 'Perabot dibuat sesuai ukuran ruang — memaksimalkan setiap sentimeter yang tersedia.',
-                'description' => "Furnitur pabrikan jarang pas untuk ruang dengan bentuk tidak biasa. Kami merancang dan memproduksi perabot custom: kitchen set, wardrobe, meja kerja, hingga partisi.\n\nSetiap unit dibuat berdasarkan pengukuran lapangan, dengan pilihan material dan finishing yang bisa Anda sesuaikan.",
-            ],
-            [
-                'title'   => 'Konsultasi & Perencanaan',
-                'icon'    => 'tabler-messages',
-                'excerpt' => 'Butuh arahan sebelum memutuskan? Mulai dari sesi konsultasi tanpa komitmen.',
-                'description' => "Jika Anda masih menimbang konsep, anggaran, atau tahapan pengerjaan, sesi konsultasi membantu memetakan prioritas.\n\nKami bantu menghitung estimasi biaya, menyusun tahapan pengerjaan, dan memberi rekomendasi material sesuai anggaran.",
-            ],
-            [
-                'title'   => 'Pengawasan Pengerjaan',
-                'icon'    => 'tabler-tools',
-                'excerpt' => 'Kami mengawal pelaksanaan di lapangan agar hasilnya sesuai gambar kerja.',
-                'description' => "Desain yang bagus bisa gagal di tahap pelaksanaan. Karena itu kami menyediakan layanan pengawasan berkala.\n\nAnda menerima laporan progres rutin, dokumentasi foto, dan catatan bila ada penyesuaian di lapangan.",
-            ],
-        ];
-
-        foreach ($services as $index => $service) {
-            Service::create($service + [
-                'slug'       => str($service['title'])->slug()->value(),
-                'sort_order' => $index + 1,
-            ]);
         }
     }
 

@@ -10,7 +10,7 @@
         $cards = [
             ['label' => 'Total Proyek',    'value' => $stats['projects'],       'icon' => 'tabler-building-arch', 'route' => 'admin.projects.index'],
             ['label' => 'Proyek Tampil',   'value' => $stats['projectsActive'], 'icon' => 'tabler-eye',           'route' => 'admin.projects.index'],
-            ['label' => 'Layanan',         'value' => $stats['services'],       'icon' => 'tabler-tools',         'route' => 'admin.services.index'],
+            ['label' => 'Paket Layanan',   'value' => $stats['services'],       'icon' => 'tabler-package',       'route' => 'admin.services.index'],
             ['label' => 'Slide Aktif',     'value' => $stats['sliders'],        'icon' => 'tabler-slideshow',     'route' => 'admin.sliders.index'],
         ];
     @endphp
@@ -103,7 +103,7 @@
             <i class="icon-base ti tabler-slideshow"></i> Kelola Slider Beranda
           </a>
           <a href="{{ route('admin.services.index') }}" class="btn btn-label-primary d-flex align-items-center justify-content-start gap-2">
-            <i class="icon-base ti tabler-tools"></i> Kelola Layanan
+            <i class="icon-base ti tabler-package"></i> Kelola Paket Layanan
           </a>
           <a href="{{ route('admin.about.edit') }}" class="btn btn-label-primary d-flex align-items-center justify-content-start gap-2">
             <i class="icon-base ti tabler-info-circle"></i> Edit Tentang Kami

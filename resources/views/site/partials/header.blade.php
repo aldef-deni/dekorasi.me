@@ -2,7 +2,7 @@
     $navItems = [
         ['route' => 'home',            'label' => 'Beranda'],
         ['route' => 'about',           'label' => 'Tentang Kami'],
-        ['route' => 'services.index',  'label' => 'Layanan',  'pattern' => 'layanan*'],
+        ['route' => 'services.index',  'label' => 'Paket Layanan',  'pattern' => 'layanan*'],
         ['route' => 'projects.index',  'label' => 'Portofolio','pattern' => 'proyek*'],
         ['route' => 'contact',         'label' => 'Kontak'],
     ];

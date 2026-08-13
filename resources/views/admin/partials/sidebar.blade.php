@@ -2,7 +2,7 @@
     $menu = [
         ['route' => 'admin.dashboard',     'icon' => 'tabler-smart-home',   'label' => 'Dashboard'],
         ['route' => 'admin.sliders.index', 'icon' => 'tabler-slideshow',    'label' => 'Slider Beranda', 'pattern' => 'admin/sliders*'],
-        ['route' => 'admin.services.index','icon' => 'tabler-tools',        'label' => 'Layanan',        'pattern' => 'admin/services*'],
+        ['route' => 'admin.services.index','icon' => 'tabler-package',      'label' => 'Paket Layanan',  'pattern' => 'admin/services*'],
         ['route' => 'admin.projects.index','icon' => 'tabler-building-arch','label' => 'Proyek',         'pattern' => 'admin/projects*'],
         ['route' => 'admin.about.edit',    'icon' => 'tabler-info-circle',  'label' => 'Tentang Kami',   'pattern' => 'admin/about*'],
         ['route' => 'admin.settings.edit', 'icon' => 'tabler-settings',     'label' => 'Pengaturan Situs','pattern' => 'admin/settings*'],

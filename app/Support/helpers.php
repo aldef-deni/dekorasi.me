@@ -42,6 +42,33 @@ if (! function_exists('upload_url')) {
     }
 }
 
+if (! function_exists('parse_poin')) {
+    /**
+     * Ubah teks multi-baris menjadi daftar poin berlabel.
+     *
+     * Setiap baris boleh ditulis "Label : Penjelasan" — bagian sebelum titik
+     * dua menjadi judul poin, sisanya menjadi penjelasan. Baris tanpa titik dua
+     * tetap dipakai, hanya saja tanpa penjelasan.
+     *
+     * @return \Illuminate\Support\Collection<int, array{label: string, teks: string}>
+     */
+    function parse_poin(?string $teks): \Illuminate\Support\Collection
+    {
+        return collect(preg_split('/\R+/', (string) $teks))
+            ->map(fn (string $baris) => trim(ltrim($baris, "-•* \t")))
+            ->filter()
+            ->map(function (string $baris) {
+                // Hanya titik dua pertama yang dianggap pemisah label.
+                $bagian = preg_split('/\s*:\s*/', $baris, 2);
+
+                return count($bagian) === 2 && $bagian[1] !== ''
+                    ? ['label' => $bagian[0], 'teks' => $bagian[1]]
+                    : ['label' => $baris, 'teks' => ''];
+            })
+            ->values();
+    }
+}
+
 if (! function_exists('whatsapp_url')) {
     /** Bangun link wa.me dari nomor telepon bebas format. */
     function whatsapp_url(?string $number, string $message = ''): string
