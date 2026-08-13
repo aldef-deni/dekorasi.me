@@ -93,22 +93,34 @@ proyek. Seeder aman dijalankan ulang — data yang sudah Anda ubah tidak tertimp
 
 ---
 
-## 4. Symlink `uploads` (wajib, agar gambar tampil)
+## 4. Folder `uploads`
+
+**`php artisan storage:link` TIDAK diperlukan — jangan dijalankan.**
+
+Hosting ini mematikan `symlink()` dan `exec()` lewat `disable_functions`,
+sehingga perintah itu pasti gagal dengan pesan
+*"Call to undefined function Illuminate\Filesystem\exec()"*.
+
+Karena itu gambar unggahan disimpan **langsung** di folder `uploads/` pada root
+project (diatur di `config/filesystems.php`), bukan di `storage/app/public`
+yang butuh symlink. Apache menyajikannya langsung — lebih cepat daripada
+melewatkan setiap gambar ke PHP.
+
+Yang perlu dipastikan hanya izin tulisnya:
 
 ```bash
-php artisan storage:link
+chmod -R 775 uploads
 ```
 
-Perintah ini membuat symlink **`uploads`** &rarr; `storage/app/public`.
+Folder `uploads/` sudah berisi `.htaccess` yang mematikan eksekusi skrip dan
+menolak berkas non-gambar. **Jangan dihapus.**
 
-> Namanya `uploads`, **bukan** `storage`, karena struktur flat membuat nama
-> `storage` sudah dipakai folder framework. Pengaturan ini ada di
-> `config/filesystems.php`.
+### Pindah dari versi sebelumnya
 
-Kalau hosting melarang symlink, buat manual:
+Kalau sebelumnya sudah ada gambar terunggah di `storage/app/public`, pindahkan:
 
 ```bash
-ln -s storage/app/public uploads
+mv storage/app/public/* uploads/
 ```
 
 ---
@@ -134,6 +146,36 @@ chmod -R 775 storage bootstrap/cache
 
 ---
 
+## Gambar tidak tampil? Jalankan diagnosa
+
+```bash
+php artisan dekorasi:diagnosa
+```
+
+Perintah ini memeriksa dan melaporkan:
+
+1. `APP_URL` — kalau masih `localhost`, semua URL gambar akan salah
+2. Folder `uploads` — ada, bisa ditulis, dan `.htaccess` pelindungnya masih ada
+3. Berkas statis wajib (`img/placeholder.svg`, `css/site.css`, aset Vuexy, dst.)
+4. URL contoh yang bisa Anda buka langsung di browser
+5. Status cache config & route
+6. **Uji keamanan** — memastikan `.env` dan berkas sensitif lain tidak bisa diakses publik
+
+Cara membaca hasil uji URL di browser:
+
+| Kode | Artinya |
+|---|---|
+| 200 | Berkas tampil — normal |
+| 404 | Berkas tidak ada di server (upload ulang berkasnya) |
+| 403 | Diblokir `.htaccess` |
+
+> Gambar unggahan tetap punya **jaring pengaman**: bila karena suatu hal
+> Apache tidak bisa menyajikan berkas di `uploads/`, Laravel melayaninya lewat
+> rute `/uploads/{path}`. Rute itu hanya menyajikan berkas gambar di dalam
+> folder unggahan dan menolak upaya keluar folder (`../`).
+
+---
+
 ## Keamanan struktur flat — penting
 
 Karena tidak ada folder `public`, folder aplikasi (`app/`, `config/`,
@@ -145,12 +187,31 @@ Yang perlu dipastikan:
 1. File `.htaccess` benar-benar ikut terunggah (file diawali titik sering
    tersembunyi di File Manager — aktifkan "Show Hidden Files").
 2. `mod_rewrite` aktif di hosting.
-3. Uji manual setelah deploy — semuanya harus **403 Forbidden** atau **404**:
+3. Uji manual setelah deploy — semuanya harus **403 Forbidden** atau **404**
+   (`php artisan dekorasi:diagnosa` menguji ini otomatis):
    - `https://domain-anda/.env`
    - `https://domain-anda/composer.json`
    - `https://domain-anda/app/Models/User.php`
    - `https://domain-anda/storage/logs/laravel.log`
 4. `APP_DEBUG=false` di produksi, supaya detail error tidak tampil ke publik.
+
+> **Kalau `.env` ternyata bisa dibaca:** isinya memuat `APP_KEY` dan kata sandi
+> database. Setelah menutup celahnya, ganti kata sandi database di cPanel,
+> perbarui `.env`, lalu jalankan `php artisan key:generate`.
+>
+> Ini berlaku juga untuk subdomain pengembangan — `dev.` tetap terbuka di
+> internet dan biasanya memakai kredensial database yang sama.
+
+### Khusus subdomain pengembangan
+
+Agar situs dev tidak terindeks mesin pencari, isi `robots.txt` dengan:
+
+```
+User-agent: *
+Disallow: /
+```
+
+Kembalikan ke isi semula saat pindah ke domain produksi.
 
 > **Alternatif yang lebih aman:** arahkan Document Root domain ke subfolder
 > `public` lewat cPanel &rsaquo; Domains &rsaquo; Manage. Dengan begitu folder
@@ -166,10 +227,10 @@ Yang perlu dipastikan:
 | `index.php` | Front controller (path sudah disesuaikan ke struktur flat) |
 | `.htaccess` | Rewrite Laravel + proteksi folder aplikasi + cache aset |
 | `assets/` | Aset Vuexy (CSS/JS sudah ter-compile — tanpa `npm install`) |
-| `css/site.css` | Gaya halaman depan (gelap-emas) |
+| `css/site.css` | Gaya halaman depan (tema terang, aksen emas) |
 | `css/admin-brand.css` | Penyesuaian warna Vuexy ke merek Dekorasi.me |
 | `img/brand/` | Logo Dekorasi.me |
-| `uploads/` | Symlink ke gambar yang diunggah dari dashboard |
+| `uploads/` | Gambar yang diunggah dari dashboard (tanpa symlink) |
 | `resources/views/site/` | Halaman depan (company profile) |
 | `resources/views/admin/` | Halaman dashboard administrator |
 

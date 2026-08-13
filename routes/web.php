@@ -10,6 +10,41 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+
+/*
+|--------------------------------------------------------------------------
+| Cadangan penyaji berkas unggahan
+|--------------------------------------------------------------------------
+|
+| Normalnya /uploads/... dilayani langsung oleh Apache lewat symlink yang
+| dibuat "php artisan storage:link", sehingga rute ini tidak pernah tersentuh.
+| Bila hosting melarang symlink (atau symlink-nya belum dibuat), rute ini
+| menjadi jaring pengaman agar gambar tetap tampil.
+|
+| Sengaja didaftarkan eksplisit di sini — bukan lewat opsi 'serve' pada disk —
+| karena opsi tersebut dilewati Laravel begitu route:cache dijalankan.
+|
+*/
+Route::get('uploads/{path}', function (string $path) {
+    // Tolak upaya keluar dari folder unggahan (../, ..\, atau versi ter-encode).
+    $normalized = str_replace('\\', '/', urldecode($path));
+
+    abort_if(str_contains($normalized, '..') || str_starts_with($normalized, '/'), 404);
+
+    // Hanya berkas gambar yang boleh disajikan lewat rute ini.
+    $ekstensi = strtolower(pathinfo($normalized, PATHINFO_EXTENSION));
+
+    abort_unless(in_array($ekstensi, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'ico'], true), 404);
+
+    $disk = Storage::disk('public');
+
+    abort_unless($disk->exists($normalized), 404);
+
+    return $disk->response($normalized, null, [
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('uploads.show');
 
 /*
 |--------------------------------------------------------------------------

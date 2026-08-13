@@ -79,24 +79,31 @@ class ServiceController extends Controller
 
         $data = $request->validate([
             'title'       => ['required', 'string', 'max:255'],
+            'subtitle'    => ['nullable', 'string', 'max:255'],
             'slug'        => ['required', 'string', 'max:255', Rule::unique('services', 'slug')->ignore($service?->id)],
             'icon'        => ['nullable', 'string', 'max:100'],
             'excerpt'     => ['nullable', 'string', 'max:500'],
+            'features'    => ['nullable', 'string', 'max:3000'],
+            'price'       => ['nullable', 'string', 'max:100'],
             'description' => ['nullable', 'string'],
             'image'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
         ], [], [
-            'title'      => 'judul',
+            'title'      => 'nama paket',
+            'subtitle'   => 'keterangan paket',
             'icon'       => 'ikon',
             'excerpt'    => 'ringkasan',
+            'features'   => 'isi paket',
+            'price'      => 'harga',
             'description'=> 'deskripsi',
             'image'      => 'gambar',
             'sort_order' => 'urutan',
         ]);
 
         unset($data['image']);
-        $data['sort_order'] = $request->integer('sort_order');
-        $data['is_active']  = $request->boolean('is_active');
+        $data['sort_order']  = $request->integer('sort_order');
+        $data['is_active']   = $request->boolean('is_active');
+        $data['is_featured'] = $request->boolean('is_featured');
 
         return $data;
     }

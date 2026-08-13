@@ -40,10 +40,18 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            // Struktur project diratakan (tanpa folder "public"), sehingga nama
-            // "storage" sudah dipakai folder framework. Symlink publik memakai
-            // nama "uploads" agar tidak bentrok. Lihat bagian 'links' di bawah.
+            // Berkas unggahan disimpan LANGSUNG di folder "uploads" pada root
+            // project, bukan di storage/app/public + symlink.
+            //
+            // Alasannya: hosting cPanel ini mematikan symlink() dan exec()
+            // lewat disable_functions, sehingga "php artisan storage:link"
+            // mustahil dijalankan. Dengan cara ini Apache menyajikan gambar
+            // secara langsung — tidak perlu symlink, dan jauh lebih ringan
+            // daripada melewatkan setiap gambar ke PHP.
+            //
+            // Keamanan: folder uploads punya .htaccess sendiri yang mematikan
+            // eksekusi skrip, dan unggahan sudah divalidasi hanya berupa gambar.
+            'root' => base_path('uploads'),
             'url' => env('APP_URL').'/uploads',
             'visibility' => 'public',
             'throw' => false,
@@ -76,10 +84,10 @@ return [
     |
     */
 
-    'links' => [
-        // Bukan public_path('storage'): public_path() kini menunjuk ke root
-        // project, dan nama "storage" di sana sudah dipakai folder framework.
-        base_path('uploads') => storage_path('app/public'),
-    ],
+    // Sengaja kosong: berkas unggahan sudah berada langsung di folder
+    // "uploads" (lihat disk 'public' di atas), jadi tidak ada symlink yang
+    // perlu dibuat. Hosting ini pun mematikan symlink() lewat disable_functions,
+    // sehingga "php artisan storage:link" tidak diperlukan sama sekali.
+    'links' => [],
 
 ];

@@ -26,8 +26,10 @@ Options -Indexes
     RewriteRule ^(\.env.*|\.git.*|composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|artisan|phpunit\.xml|.*\.md|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js)$ - [F,L]
 </IfModule>
 
-# Lapis kedua bila mod_rewrite tidak aktif
-<FilesMatch "^\.">
+# Lapis kedua bila mod_rewrite tidak aktif.
+# Pola diperluas: menutup .env, .env.backup, .env.production, .git, dsb. —
+# baik di root maupun di subfolder mana pun.
+<FilesMatch "(^\.|^.*\.(env|env\..*|log|sqlite|sql|bak|backup|old|ini|sh|swp|dist)$)">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -36,6 +38,14 @@ Options -Indexes
         Deny from all
     </IfModule>
 </FilesMatch>
+
+# Lapis ketiga: blokir berdasarkan nama berkas lewat rewrite, mencakup pula
+# permintaan ter-encode yang lolos dari FilesMatch.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
+    RewriteRule \.(env|log|sqlite|sql|bak|backup|old|swp|dist)($|/) - [F,L]
+</IfModule>
 
 <FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|artisan|phpunit\.xml|.*\.md|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js)$">
     <IfModule mod_authz_core.c>
