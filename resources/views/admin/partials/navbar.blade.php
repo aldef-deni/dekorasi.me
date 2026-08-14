@@ -27,7 +27,7 @@
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
           <div class="avatar avatar-online">
-            <img src="{{ upload_url(auth()->user()->avatar, asset('assets/img/avatars/1.png')) }}"
+            <img src="{{ avatar_url(auth()->user()) }}"
                  alt="{{ auth()->user()->name }}" class="rounded-circle" />
           </div>
         </a>
@@ -37,7 +37,7 @@
               <div class="d-flex align-items-center">
                 <div class="flex-shrink-0 me-2">
                   <div class="avatar avatar-online">
-                    <img src="{{ upload_url(auth()->user()->avatar, asset('assets/img/avatars/1.png')) }}"
+                    <img src="{{ avatar_url(auth()->user()) }}"
                          alt="{{ auth()->user()->name }}" class="rounded-circle" />
                   </div>
                 </div>
@@ -49,6 +49,18 @@
             </div>
           </li>
           <li><div class="dropdown-divider my-1"></div></li>
+          <li>
+            <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">
+              <i class="icon-base ti tabler-user me-2 icon-22px"></i>
+              <span>Profil Saya</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{{ route('admin.profile.edit') }}#kata-sandi">
+              <i class="icon-base ti tabler-key me-2 icon-22px"></i>
+              <span>Ubah Kata Sandi</span>
+            </a>
+          </li>
           <li>
             <a class="dropdown-item" href="{{ route('admin.settings.edit') }}">
               <i class="icon-base ti tabler-settings me-2 icon-22px"></i>

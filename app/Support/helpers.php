@@ -42,6 +42,41 @@ if (! function_exists('upload_url')) {
     }
 }
 
+if (! function_exists('avatar_url')) {
+    /**
+     * Foto profil pengguna. Bila belum mengunggah foto, dibuatkan lingkaran
+     * berinisial nama dengan warna merek — tanpa perlu berkas gambar.
+     */
+    function avatar_url(?\App\Models\User $user): string
+    {
+        if ($user?->avatar) {
+            return upload_url($user->avatar);
+        }
+
+        $inisial = collect(preg_split('/\s+/', trim((string) ($user?->name ?: 'A'))))
+            ->filter()
+            ->take(2)
+            ->map(fn (string $kata) => mb_strtoupper(mb_substr($kata, 0, 1)))
+            ->implode('');
+
+        $svg = <<<SVG
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#d9a441"/>
+                  <stop offset="100%" stop-color="#8a6318"/>
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" rx="50" fill="url(#g)"/>
+              <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+                    font-family="Georgia, serif" font-size="42" font-weight="600" fill="#fff">{$inisial}</text>
+            </svg>
+            SVG;
+
+        return 'data:image/svg+xml;base64,'.base64_encode($svg);
+    }
+}
+
 if (! function_exists('banner_url')) {
     /**
      * URL banner untuk sebuah halaman ('about', 'services', 'projects', 'contact').

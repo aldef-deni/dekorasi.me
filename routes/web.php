@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectImageController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -91,6 +92,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('projects/{project}/images', [ProjectImageController::class, 'store'])->name('projects.images.store');
     Route::delete('project-images/{image}', [ProjectImageController::class, 'destroy'])->name('projects.images.destroy');
     Route::post('projects/{project}/images/reorder', [ProjectImageController::class, 'reorder'])->name('projects.images.reorder');
+
+    // Profil administrator
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
+    Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     // Halaman Tentang Kami
     Route::get('about', [AboutController::class, 'edit'])->name('about.edit');

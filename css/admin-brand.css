@@ -54,6 +54,102 @@
   background: var(--bs-body-bg);
 }
 
+/* ===================== Halaman Profil ===================== */
+
+.profile-card {
+  overflow: hidden;
+}
+
+/* Pita emas di kepala kartu, avatar menumpang di atasnya */
+.profile-cover {
+  position: relative;
+  height: 116px;
+  background:
+    radial-gradient(circle 220px at 30% 120%, rgba(255, 255, 255, 0.28), transparent 70%),
+    linear-gradient(135deg, var(--dm-gold-lite) 0%, var(--dm-gold) 45%, var(--dm-gold-deep) 100%);
+}
+
+/* Pola garis halus agar pita tidak terasa datar */
+.profile-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, #000, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+}
+
+/* Tinggi dipatok: bila gambar gagal dimuat, ruangnya tetap ada sehingga
+   nama tidak tertarik naik ke balik pita emas.
+   position+z-index wajib: .profile-cover ber-position:relative sehingga
+   tanpa ini pita emas melukis di atas avatar dan menutupi separuhnya. */
+.profile-avatar-wrap {
+  position: relative;
+  z-index: 1;
+  margin-top: -62px;
+  margin-bottom: 14px;
+  min-height: 118px;
+}
+
+.profile-avatar {
+  width: 118px;
+  height: 118px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--bs-card-bg, #fff);
+  box-shadow: 0 10px 26px rgba(28, 26, 23, 0.16);
+  background: var(--bs-body-bg);
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.profile-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Area unggah foto */
+.profile-upload {
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.profile-upload:hover {
+  border-color: var(--bs-primary);
+  background: var(--bs-primary-bg-subtle);
+}
+
+/* Ikon judul tiap bagian pengaturan */
+.profile-section-icon {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
 /* Galeri foto proyek */
 .gallery-grid {
   display: grid;
