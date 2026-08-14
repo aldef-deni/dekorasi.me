@@ -140,6 +140,42 @@
   {{-- ============================ CTA ============================ --}}
   @include('site.partials.cta')
 
+  {{-- ============================ Group Kami ============================ --}}
+  @php
+      $grup = [
+          ['berkas' => 'akr',              'nama' => 'PT Aneka Karya Rakaindo'],
+          ['berkas' => 'bawono',           'nama' => 'Bawono Business Strategy'],
+          ['berkas' => 'scp',              'nama' => 'SCP'],
+          ['berkas' => 'ruangsinggah',     'nama' => 'Ruang Singgah Hotel & Apartment'],
+          ['berkas' => 'arahinn-dekorasi', 'nama' => 'ArahInn'],
+      ];
+  @endphp
+
+  <section class="group-section">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Satu Keluarga Usaha</span>
+        <h2>Group <span class="gold-text">Kami</span></h2>
+        <p class="lead" style="margin-inline:auto">
+          Dekorasi.me bertumbuh bersama unit usaha lain yang saling melengkapi —
+          dari strategi bisnis, konstruksi, hingga perhotelan.
+        </p>
+      </div>
+
+      <div class="group-grid">
+        @foreach ($grup as $anggota)
+          <div class="group-item reveal">
+            <div class="group-logo">
+              <img src="{{ asset('img/group/' . $anggota['berkas'] . '.png') }}"
+                   alt="{{ $anggota['nama'] }}" loading="lazy" />
+            </div>
+            <span class="group-name">{{ $anggota['nama'] }}</span>
+          </div>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
 @endsection
 
 @push('scripts')
