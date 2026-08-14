@@ -71,13 +71,31 @@
                           placeholder="Jl. Contoh No. 12, Jakarta Selatan">{{ old('contact_address', setting('contact.address')) }}</textarea>
               </div>
               <div class="col-12 mb-0">
-                <label class="form-label" for="contact_maps_embed">Kode Embed Google Maps</label>
+                <label class="form-label" for="contact_maps_embed">
+                  Kode Embed Google Maps <span class="text-body-secondary fw-normal">(opsional)</span>
+                </label>
                 <textarea class="form-control" id="contact_maps_embed" name="contact_maps_embed" rows="3"
-                          placeholder="https://www.google.com/maps/embed?pb=…">{{ old('contact_maps_embed', setting('contact.maps_embed')) }}</textarea>
+                          placeholder="Kosongkan saja — peta otomatis mengikuti Alamat di atas.">{{ old('contact_maps_embed', setting('contact.maps_embed')) }}</textarea>
+
                 <div class="form-text">
-                  Tempel <strong>URL saja</strong> dari Google Maps &rsaquo; Bagikan &rsaquo; Sematkan peta
-                  (bagian <code>src="…"</code>), bukan seluruh tag iframe.
+                  <strong>Biasanya tidak perlu diisi.</strong> Peta di halaman Kontak otomatis
+                  dibuat dari <strong>Alamat</strong> yang Anda isi di atas.
+                  <br />
+                  Isi kolom ini hanya bila ingin menunjuk titik yang lebih presisi — ambil dari
+                  Google Maps &rsaquo; Bagikan &rsaquo; Sematkan peta. Boleh menempel URL saja
+                  maupun seluruh tag <code>&lt;iframe&gt;</code>, keduanya diterima.
                 </div>
+
+                @if (setting('contact.address') || setting('contact.maps_embed'))
+                  <a href="{{ route('contact') }}#peta" target="_blank" rel="noopener"
+                     class="btn btn-sm btn-label-primary mt-3">
+                    <i class="icon-base ti tabler-map-pin me-1"></i> Lihat peta di halaman Kontak
+                  </a>
+                @else
+                  <div class="alert alert-warning mt-3 mb-0 py-2 px-3 small">
+                    Alamat masih kosong, jadi peta belum tampil di halaman Kontak.
+                  </div>
+                @endif
               </div>
             </div>
           </div>

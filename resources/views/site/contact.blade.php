@@ -71,10 +71,44 @@
         </p>
       @endif
 
-      @if (setting('contact.maps_embed'))
-        <div class="reveal" style="margin-top:56px;border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden">
-          <iframe src="{{ setting('contact.maps_embed') }}" width="100%" height="420" style="border:0;display:block;filter:grayscale(.35) contrast(1.05)"
-                  allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lokasi {{ $siteName }}"></iframe>
+      @php $peta = maps_embed_url(); @endphp
+
+      @if ($peta)
+        <div class="map-block reveal" id="peta">
+          <iframe src="{{ $peta }}" title="Lokasi {{ $siteName }}"
+                  loading="lazy" allowfullscreen
+                  referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          {{-- Kartu alamat mengambang di atas peta --}}
+          <div class="map-card">
+            <span class="eyebrow">Lokasi Kami</span>
+            <h3>{{ $siteName }}</h3>
+
+            @if (setting('contact.address'))
+              <p class="map-address">{{ setting('contact.address') }}</p>
+            @endif
+
+            @if (setting('contact.hours'))
+              <p class="map-hours">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15">
+                  <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                </svg>
+                {{ setting('contact.hours') }}
+              </p>
+            @endif
+
+            <div class="map-actions">
+              <a class="btn btn-gold" href="{{ maps_link_url(true) }}" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="16" height="16">
+                  <path d="m3 11 18-8-8 18-2-8-8-2Z"/>
+                </svg>
+                Petunjuk Arah
+              </a>
+              <a class="btn btn-ghost" href="{{ maps_link_url() }}" target="_blank" rel="noopener">
+                Buka di Maps
+              </a>
+            </div>
+          </div>
         </div>
       @endif
     </div>

@@ -42,6 +42,66 @@ if (! function_exists('upload_url')) {
     }
 }
 
+if (! function_exists('maps_embed_url')) {
+    /**
+     * URL peta untuk disematkan di halaman Kontak.
+     *
+     * Urutannya:
+     *   1. Kode embed khusus dari Pengaturan Situs — menerima URL polos maupun
+     *      seluruh tag <iframe>, karena banyak orang menempel tag utuh.
+     *   2. Bila kosong, peta dibangun otomatis dari alamat yang diisi admin,
+     *      sehingga peta selalu mengikuti alamat tanpa perlu diatur terpisah.
+     */
+    function maps_embed_url(): ?string
+    {
+        $embed = trim((string) setting('contact.maps_embed'));
+
+        if ($embed !== '') {
+            // Ambil src="..." bila yang ditempel adalah tag iframe utuh.
+            if (preg_match('/src=["\']([^"\']+)["\']/i', $embed, $cocok)) {
+                return $cocok[1];
+            }
+
+            if (str_starts_with($embed, 'http')) {
+                return $embed;
+            }
+        }
+
+        $alamat = trim((string) setting('contact.address'));
+
+        if ($alamat === '') {
+            return null;
+        }
+
+        // z=16 : tingkat perbesaran yang pas untuk skala jalan.
+        //
+        // Catatan: Google selalu menampilkan panel info alamat di kiri atas peta
+        // sematan dan tidak bisa dimatikan lewat parameter URL. Karena itu kartu
+        // alamat di halaman diletakkan pada sisi kanan (lihat .map-card).
+        return 'https://www.google.com/maps?q='.rawurlencode($alamat).'&z=16&output=embed';
+    }
+}
+
+if (! function_exists('maps_link_url')) {
+    /**
+     * Tautan Google Maps untuk dibuka di tab baru.
+     *
+     * @param  bool  $petunjukArah  true = langsung ke mode petunjuk arah
+     */
+    function maps_link_url(bool $petunjukArah = false): ?string
+    {
+        $alamat = trim((string) setting('contact.address'));
+
+        if ($alamat === '') {
+            return null;
+        }
+
+        return $petunjukArah
+            ? 'https://www.google.com/maps/dir/?api=1&destination='.rawurlencode($alamat)
+            : 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($alamat);
+    }
+}
+
 if (! function_exists('avatar_url')) {
     /**
      * Foto profil pengguna. Bila belum mengunggah foto, dibuatkan lingkaran
