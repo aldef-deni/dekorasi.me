@@ -1163,7 +1163,77 @@ section {
 .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
 .gallery figure:hover img { transform: scale(1.05); }
 
-/* Lightbox */
+/* Ikon kaca pembesar saat kartu galeri disorot */
+.gallery figure { position: relative; }
+
+.gallery-zoom {
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline-end: 12px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(16, 14, 11, 0.55);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.28s, transform 0.28s;
+  pointer-events: none;
+}
+
+.gallery-zoom svg { width: 18px; height: 18px; }
+
+@media (hover: hover) {
+  .gallery figure:hover .gallery-zoom { opacity: 1; transform: none; }
+}
+
+/* ---------------- Paginasi galeri ---------------- */
+
+.gallery-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 34px;
+}
+
+.gallery-pager button {
+  min-width: 42px;
+  height: 42px;
+  padding-inline: 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+
+.gallery-pager button:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--gold-deep);
+}
+
+.gallery-pager button.active {
+  background: var(--gold-wash);
+  border-color: var(--gold);
+  color: var(--gold-deep);
+  font-weight: 600;
+}
+
+.gallery-pager button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ---------------- Modal galeri ---------------- */
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -1171,33 +1241,101 @@ section {
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 28px;
-  background: rgba(24, 22, 19, 0.93);
-  backdrop-filter: blur(6px);
+  gap: clamp(8px, 2vw, 28px);
+  padding: clamp(16px, 4vw, 40px);
+  background: rgba(14, 12, 10, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .lightbox.open { display: flex; }
 
-.lightbox img {
-  max-width: 100%;
-  max-height: 88vh;
-  border-radius: 10px;
-  object-fit: contain;
+.lb-stage {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  /* Disisakan ruang di kiri-kanan supaya panah tidak menempel tepi layar. */
+  max-width: min(1080px, 100%);
 }
 
-.lightbox button {
-  position: absolute;
-  inset-block-start: 22px;
-  inset-inline-end: 22px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 1.4rem;
-  cursor: pointer;
+.lb-stage img {
+  max-width: 100%;
+  max-height: 78vh;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  /* Pergantian foto terasa lembut, bukan melompat */
+  animation: lbMasuk 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
+
+@keyframes lbMasuk {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.lb-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.lb-caption {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.94rem;
+  max-width: 60ch;
+}
+
+.lb-counter {
+  color: var(--gold-lite);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Tombol panah & tutup */
+.lb-nav,
+.lb-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+}
+
+.lb-nav { width: 54px; height: 54px; }
+.lb-nav svg { width: 24px; height: 24px; }
+
+.lb-close {
+  position: absolute;
+  inset-block-start: clamp(16px, 3vw, 28px);
+  inset-inline-end: clamp(16px, 3vw, 28px);
+  width: 46px;
+  height: 46px;
+}
+
+.lb-close svg { width: 20px; height: 20px; }
+
+@media (hover: hover) {
+  .lb-nav:hover,
+  .lb-close:hover {
+    background: rgba(217, 164, 65, 0.22);
+    border-color: var(--gold-lite);
+    transform: scale(1.06);
+  }
+}
+
+.lb-nav:active,
+.lb-close:active { transform: scale(0.95); }
 
 /* ============================ CTA ============================ */
 
@@ -1705,6 +1843,34 @@ section {
   .footer-grid { grid-template-columns: 1fr; gap: 30px; padding-bottom: 36px; }
   .site-footer { padding-block: 48px 0; }
   .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+
+
+  /* Modal galeri di layar sempit: panah turun ke bawah foto supaya tidak
+     memakan lebar gambar, dan ukurannya tetap nyaman disentuh. */
+  .lightbox {
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 14px;
+  }
+
+  .lb-stage {
+    order: 1;
+    flex: 1 0 100%;
+  }
+
+  .lb-stage img { max-height: 62vh; }
+
+  .lb-prev { order: 2; }
+  .lb-next { order: 3; }
+
+  .lb-nav { width: 48px; height: 48px; }
+  .lb-caption { font-size: 0.88rem; }
+
+  .gallery-pager { gap: 6px; margin-top: 26px; }
+  .gallery-pager button { min-width: 38px; height: 38px; padding-inline: 9px; font-size: 0.82rem; }
+
+  /* Layar sentuh tidak punya hover — ikon zoom ditampilkan tetap, samar */
+  .gallery-zoom { opacity: 0.85; transform: none; width: 34px; height: 34px; }
 
   .wa-float { inset-block-end: 18px; inset-inline-end: 18px; width: 52px; height: 52px; }
 }

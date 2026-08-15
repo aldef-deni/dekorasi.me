@@ -75,6 +75,10 @@ return [
         'area'         => 'Luas',
         'year'         => 'Tahun',
         'category'     => 'Kategori',
+        'prev'         => 'Sebelumnya',
+        'next'         => 'Berikutnya',
+        'counter'      => ':current dari :total',
+        'page'         => 'Halaman :number',
         'photo'        => 'foto :number',
     ],
 

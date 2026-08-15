@@ -75,6 +75,10 @@ return [
         'area'         => 'Area',
         'year'         => 'Year',
         'category'     => 'Category',
+        'prev'         => 'Previous',
+        'next'         => 'Next',
+        'counter'      => ':current of :total',
+        'page'         => 'Page :number',
         'photo'        => 'photo :number',
     ],
 
