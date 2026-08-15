@@ -120,4 +120,7 @@
 
   @include('site.partials.cta')
 
+  {{-- ============================ Group Kami ============================ --}}
+  @include('site.partials.group')
+
 @endsection
