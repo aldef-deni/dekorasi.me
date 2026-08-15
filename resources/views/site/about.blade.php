@@ -1,19 +1,19 @@
 @extends('layouts.site')
 
-@section('meta-title', setting('about.heading', 'Tentang Kami') . ' — ' . setting('site.name', 'Dekorasi.me'))
-@section('meta-description', Str::limit(strip_tags(setting('about.subtitle') ?: setting('about.body')), 155))
+@section('meta-title', setting_t('about.heading', __('site.nav.about')) . ' — ' . setting('site.name', 'Dekorasi.me'))
+@section('meta-description', Str::limit(strip_tags(setting_t('about.subtitle') ?: setting_t('about.body')), 155))
 
 @section('content')
 
   <section class="page-hero with-image" style="--hero-image:url('{{ banner_url('about') }}')">
     <div class="wrap">
       <div class="breadcrumbs">
-        <a href="{{ route('home') }}">Beranda</a> <span>/</span> <span>Tentang Kami</span>
+        <a href="{{ route('home') }}">{{ __('site.common.home') }}</a> <span>/</span> <span>{{ __('site.nav.about') }}</span>
       </div>
-      <span class="eyebrow">Profil Perusahaan</span>
-      <h1 class="gold-text">{{ setting('about.heading', 'Tentang ' . setting('site.name', 'Dekorasi.me')) }}</h1>
-      @if (setting('about.subtitle'))
-        <p class="lead" style="margin-top:1.2rem">{{ setting('about.subtitle') }}</p>
+      <span class="eyebrow">{{ __('site.about.eyebrow') }}</span>
+      <h1 class="gold-text">{{ setting_t('about.heading', __('site.about.default_heading')) }}</h1>
+      @if (setting_t('about.subtitle'))
+        <p class="lead" style="margin-top:1.2rem">{{ setting_t('about.subtitle') }}</p>
       @endif
     </div>
   </section>
@@ -34,18 +34,14 @@
         </div>
 
         <div class="reveal">
-          <span class="eyebrow">Cerita Kami</span>
+          <span class="eyebrow">{{ __('site.about.story') }}</span>
           <div class="prose" style="margin-top:.6rem">
-            @forelse (preg_split('/\R{2,}/', trim((string) setting('about.body'))) as $paragraph)
+            @forelse (preg_split('/\R{2,}/', trim((string) setting_t('about.body'))) as $paragraph)
               @if (trim($paragraph) !== '')
                 <p>{{ $paragraph }}</p>
               @endif
             @empty
-              <p>
-                Kami adalah studio desain interior yang percaya bahwa ruang yang baik lahir dari
-                mendengarkan. Setiap proyek dimulai dari memahami cara Anda hidup dan bekerja,
-                lalu menerjemahkannya menjadi tata ruang, material, dan pencahayaan yang tepat.
-              </p>
+              <p>{{ __('site.about.default_body') }}</p>
             @endforelse
           </div>
         </div>
@@ -55,7 +51,7 @@
 
   @php
       $stats = collect(range(1, 4))
-          ->map(fn ($i) => ['value' => setting("about.stat{$i}_value"), 'label' => setting("about.stat{$i}_label")])
+          ->map(fn ($i) => ['value' => setting("about.stat{$i}_value"), 'label' => setting_t("about.stat{$i}_label")])
           ->filter(fn ($stat) => filled($stat['value']));
   @endphp
 
@@ -74,7 +70,7 @@
     </section>
   @endif
 
-  @php $misi = parse_poin(setting('about.mission')); @endphp
+  @php $misi = parse_poin(setting_t('about.mission')); @endphp
 
   @if (setting('about.vision') || $misi->isNotEmpty())
     <section style="background:var(--bg-soft);border-block:1px solid var(--line-soft)">
@@ -82,14 +78,14 @@
         <div class="vm-split">
 
           {{-- Kolom kiri: Visi --}}
-          @if (setting('about.vision'))
+          @if (setting_t('about.vision'))
             <div class="reveal">
-              <div class="vm-lead">Arah Kami</div>
-              <h2 class="vm-title">Visi</h2>
+              <div class="vm-lead">{{ __('site.about.direction') }}</div>
+              <h2 class="vm-title">{{ __('site.about.vision') }}</h2>
               <div class="vm-rule"></div>
 
               <div class="vision">
-                <p>{{ setting('about.vision') }}</p>
+                <p>{{ setting_t('about.vision') }}</p>
               </div>
             </div>
           @endif
@@ -97,8 +93,8 @@
           {{-- Kolom kanan: Misi --}}
           @if ($misi->isNotEmpty())
             <div class="reveal">
-              <div class="vm-lead">Cara Kami Mewujudkannya</div>
-              <h2 class="vm-title">Misi</h2>
+              <div class="vm-lead">{{ __('site.about.mission_lead') }}</div>
+              <h2 class="vm-title">{{ __('site.about.mission') }}</h2>
               <div class="vm-rule"></div>
 
               <div class="mission-list">

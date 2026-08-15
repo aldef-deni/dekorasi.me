@@ -47,6 +47,7 @@ class ProjectController extends Controller
         }
 
         $project = Project::create($data);
+        $this->simpanTerjemahan($project, $request);
 
         return redirect()->route('admin.projects.edit', $project)
             ->with('success', 'Proyek berhasil dibuat. Silakan tambahkan foto galeri.');
@@ -68,6 +69,7 @@ class ProjectController extends Controller
         }
 
         $project->update($data);
+        $this->simpanTerjemahan($project, $request);
 
         return redirect()->route('admin.projects.edit', $project)->with('success', 'Proyek berhasil diperbarui.');
     }
@@ -121,5 +123,12 @@ class ProjectController extends Controller
         $data['is_featured'] = $request->boolean('is_featured');
 
         return $data;
+    }
+
+    /** Simpan versi Inggris dari kolom yang bisa diterjemahkan. */
+    private function simpanTerjemahan(\Illuminate\Database\Eloquent\Model $model, Request $request): void
+    {
+        $model->setTranslation('en', (array) $request->input('en', []));
+        $model->save();
     }
 }

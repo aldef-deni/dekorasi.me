@@ -98,6 +98,17 @@
 
           </div>
         </div>
+
+        @include('admin.partials.translation-card', [
+            'model'  => $project,
+            'fields' => [
+                'title'       => ['Project Name', 'text', 'Modern Minimalist House, Bintaro'],
+                'category'    => ['Category', 'text', 'Residential'],
+                'area'        => ['Area', 'text', '180 sqm'],
+                'excerpt'     => ['Summary', 'textarea', 'A short line shown on the portfolio card.'],
+                'description' => ['Full Description', 'textarea', 'Concept, challenges, materials, and the final result.'],
+            ],
+        ])
       </div>
 
       <div class="col-lg-4">

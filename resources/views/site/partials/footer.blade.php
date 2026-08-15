@@ -20,7 +20,7 @@
                alt="{{ setting('site.name', 'Dekorasi.me') }}" />
           <span>{{ setting('site.name', 'Dekorasi.me') }}</span>
         </a>
-        <p>{{ setting('site.description', 'Studio desain interior yang mengubah ruang menjadi pengalaman — dari konsep, visualisasi, hingga eksekusi di lapangan.') }}</p>
+        <p>{{ setting_t('site.description', __('site.footer.default_description')) }}</p>
 
         @if ($socials)
           <div class="socials">
@@ -49,31 +49,31 @@
       </div>
 
       <div>
-        <h4>Navigasi</h4>
+        <h4>{{ __('site.footer.navigation') }}</h4>
         <ul>
-          <li><a href="{{ route('home') }}">Beranda</a></li>
-          <li><a href="{{ route('about') }}">Tentang Kami</a></li>
-          <li><a href="{{ route('services.index') }}">Paket Layanan</a></li>
-          <li><a href="{{ route('projects.index') }}">Portofolio</a></li>
-          <li><a href="{{ route('contact') }}">Kontak</a></li>
+          <li><a href="{{ route('home') }}">{{ __('site.nav.home') }}</a></li>
+          <li><a href="{{ route('about') }}">{{ __('site.nav.about') }}</a></li>
+          <li><a href="{{ route('services.index') }}">{{ __('site.nav.services') }}</a></li>
+          <li><a href="{{ route('projects.index') }}">{{ __('site.nav.projects') }}</a></li>
+          <li><a href="{{ route('contact') }}">{{ __('site.nav.contact') }}</a></li>
         </ul>
       </div>
 
       <div>
-        <h4>Paket Layanan</h4>
+        <h4>{{ __('site.footer.services') }}</h4>
         <ul>
           @forelse ($footerServices as $service)
-            <li><a href="{{ route('services.show', $service) }}">{{ $service->title }}</a></li>
+            <li><a href="{{ route('services.show', $service) }}">{{ $service->t('title') }}</a></li>
           @empty
-            <li>Paket Silver</li>
-            <li>Paket Gold</li>
-            <li>Paket Platinum</li>
+            <li>{{ __('site.footer.package_silver') }}</li>
+            <li>{{ __('site.footer.package_gold') }}</li>
+            <li>{{ __('site.footer.package_platinum') }}</li>
           @endforelse
         </ul>
       </div>
 
       <div>
-        <h4>Hubungi Kami</h4>
+        <h4>{{ __('site.footer.contact') }}</h4>
         <ul>
           @if (setting('contact.address'))
             <li>{{ setting('contact.address') }}</li>
@@ -92,8 +92,8 @@
     </div>
 
     <div class="footer-bottom">
-      <span>&copy; {{ date('Y') }} {{ setting('site.name', 'Dekorasi.me') }}. Seluruh hak cipta dilindungi.</span>
-      <span>{{ setting('site.tagline', 'Interior Design Studio') }}</span>
+      <span>&copy; {{ date('Y') }} {{ setting('site.name', 'Dekorasi.me') }}. {{ __('site.footer.rights') }}</span>
+      <span>{{ setting_t('site.tagline', __('site.hero.default_eyebrow')) }}</span>
     </div>
   </div>
 </footer>

@@ -2,18 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class Service extends Model
 {
+    use HasTranslations;
+
+    /** Kolom yang punya versi terjemahan. */
+    protected array $translatable = ['title', 'subtitle', 'excerpt', 'features', 'description', 'price'];
+
     protected $fillable = [
+        'translations',
         'title', 'subtitle', 'slug', 'icon', 'excerpt', 'features', 'price',
         'description', 'image', 'sort_order', 'is_featured', 'is_active',
     ];
 
     protected $casts = [
+        'translations' => 'array',
         'is_active'   => 'boolean',
         'is_featured' => 'boolean',
         'sort_order'  => 'integer',
@@ -31,7 +39,7 @@ class Service extends Model
      */
     public function featureList(): Collection
     {
-        return collect(preg_split('/\R+/', (string) $this->features))
+        return collect(preg_split('/\R+/', (string) $this->t('features')))
             ->map(fn (string $baris) => trim(ltrim($baris, "-•* \t")))
             ->filter()
             ->values();

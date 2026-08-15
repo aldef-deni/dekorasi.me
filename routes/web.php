@@ -49,6 +49,23 @@ Route::get('uploads/{path}', function (string $path) {
 
 /*
 |--------------------------------------------------------------------------
+| Ganti bahasa
+|--------------------------------------------------------------------------
+|
+| Menyimpan pilihan bahasa ke sesi lalu kembali ke halaman sebelumnya,
+| sehingga pengunjung tidak kehilangan posisi bacanya.
+|
+*/
+Route::get('bahasa/{locale}', function (string $locale) {
+    abort_unless(array_key_exists($locale, \App\Http\Middleware\SetLocale::SUPPORTED), 404);
+
+    session(['locale' => $locale]);
+
+    return back();
+})->name('locale.switch');
+
+/*
+|--------------------------------------------------------------------------
 | Halaman Publik (Company Profile)
 |--------------------------------------------------------------------------
 */

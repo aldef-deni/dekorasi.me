@@ -53,9 +53,23 @@ class SiteController extends Controller
             ->paginate(9)
             ->withQueryString();
 
+        // Kategori dibawa sebagai pasangan nilai + label: nilainya tetap bahasa
+        // Indonesia (dipakai untuk menyaring), labelnya mengikuti bahasa aktif.
+        $categories = Project::active()
+            ->whereNotNull('category')
+            ->orderBy('category')
+            ->get(['id', 'category', 'translations'])
+            ->unique('category')
+            ->map(fn (Project $project) => [
+                'value' => $project->category,
+                'label' => $project->t('category'),
+            ])
+            ->sortBy('label')
+            ->values();
+
         return view('site.projects', [
             'projects'   => $projects,
-            'categories' => Project::active()->whereNotNull('category')->distinct()->orderBy('category')->pluck('category'),
+            'categories' => $categories,
             'active'     => $category,
         ]);
     }

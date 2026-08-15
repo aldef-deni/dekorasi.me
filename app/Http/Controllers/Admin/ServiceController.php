@@ -37,7 +37,8 @@ class ServiceController extends Controller
             $data['image'] = $this->images->store($request->file('image'), 'services');
         }
 
-        Service::create($data);
+        $service = Service::create($data);
+        $this->simpanTerjemahan($service, $request);
 
         return redirect()->route('admin.services.index')->with('success', 'Paket layanan berhasil ditambahkan.');
     }
@@ -56,6 +57,7 @@ class ServiceController extends Controller
         }
 
         $service->update($data);
+        $this->simpanTerjemahan($service, $request);
 
         return redirect()->route('admin.services.index')->with('success', 'Paket layanan berhasil diperbarui.');
     }
@@ -106,5 +108,12 @@ class ServiceController extends Controller
         $data['is_featured'] = $request->boolean('is_featured');
 
         return $data;
+    }
+
+    /** Simpan versi Inggris dari kolom yang bisa diterjemahkan. */
+    private function simpanTerjemahan(\Illuminate\Database\Eloquent\Model $model, Request $request): void
+    {
+        $model->setTranslation('en', (array) $request->input('en', []));
+        $model->save();
     }
 }

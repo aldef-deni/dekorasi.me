@@ -130,6 +130,38 @@
           </div>
         </div>
 
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-1 d-flex align-items-center gap-2">
+              <i class="icon-base ti tabler-language text-primary"></i> Versi Bahasa Inggris
+            </h5>
+            <p class="mb-0 text-body-secondary small">
+              Tampil saat pengunjung memilih bahasa Inggris. Kosongkan bila ingin
+              memakai teks bahasa Indonesia.
+            </p>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <label class="form-label" for="site_tagline_en">Tagline (English)</label>
+              <input type="text" class="form-control" id="site_tagline_en" name="site_tagline_en"
+                     value="{{ old('site_tagline_en', setting('site.tagline_en')) }}"
+                     placeholder="Premium Interior Design" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label" for="site_description_en">Short Description (English)</label>
+              <textarea class="form-control" id="site_description_en" name="site_description_en" rows="3"
+                        placeholder="Used as the meta description and footer text.">{{ old('site_description_en', setting('site.description_en')) }}</textarea>
+            </div>
+            <div class="mb-0">
+              <label class="form-label" for="seo_title_en">SEO Title (English)</label>
+              <input type="text" class="form-control" id="seo_title_en" name="seo_title_en"
+                     value="{{ old('seo_title_en', setting('seo.title_en')) }}"
+                     placeholder="Premium Interior Design Service — Dekorasi.me" />
+            </div>
+          </div>
+        </div>
+
         <div class="card mb-4">
           <div class="card-header">
             <h5 class="mb-1">Banner Halaman</h5>

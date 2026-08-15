@@ -273,6 +273,43 @@ section {
 .nav a.active::after,
 .nav a:hover::after { width: 100%; }
 
+/* Kelompok kanan header: pemilih bahasa + tombol menu */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Pemilih bahasa: dua pil kecil ID / EN */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.lang-switch a {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  transition: color 0.25s, background 0.25s;
+}
+
+.lang-switch a:hover { color: var(--gold-deep); }
+
+.lang-switch a.active {
+  background: linear-gradient(135deg, var(--gold-lite), var(--gold-deep));
+  color: #fff;
+}
+
+/* Versi di dalam drawer mobile — disembunyikan di desktop */
+.lang-switch-mobile { display: none; }
+
 .nav-toggle {
   display: none;
   background: #fff;
@@ -1508,6 +1545,17 @@ section {
   .nav.open { transform: none; }
   .nav a { font-size: 1rem; }
   .nav-close { display: inline-flex; }
+
+  /* Di layar sempit pemilih bahasa pindah ke dalam drawer agar header lega */
+  .header-right > .lang-switch { display: none; }
+
+  .lang-switch-mobile {
+    display: inline-flex;
+    margin-top: 10px;
+    align-self: flex-start;
+  }
+
+  .lang-switch-mobile a { font-size: 0.78rem; padding: 7px 16px; }
 
   /* Harus DI BAWAH .site-header (z-index 100). Sebabnya .nav berada di dalam
      header, dan header adalah stacking context — jadi z-index .nav hanya

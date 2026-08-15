@@ -80,6 +80,45 @@
           </div>
         </div>
 
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-1 d-flex align-items-center gap-2">
+              <i class="icon-base ti tabler-language text-primary"></i> Versi Bahasa Inggris
+            </h5>
+            <p class="mb-0 text-body-secondary small">
+              Kolom yang dikosongkan otomatis memakai teks bahasa Indonesia.
+            </p>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <label class="form-label" for="about_heading_en">Page Title (English)</label>
+              <input type="text" class="form-control" id="about_heading_en" name="about_heading_en"
+                     value="{{ old('about_heading_en', setting('about.heading_en')) }}"
+                     placeholder="Small Details, Great Impact" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label" for="about_subtitle_en">Subtitle (English)</label>
+              <input type="text" class="form-control" id="about_subtitle_en" name="about_subtitle_en"
+                     value="{{ old('about_subtitle_en', setting('about.subtitle_en')) }}" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label" for="about_body_en">Company Story (English)</label>
+              <textarea class="form-control" id="about_body_en" name="about_body_en" rows="8">{{ old('about_body_en', setting('about.body_en')) }}</textarea>
+            </div>
+            <div class="mb-4">
+              <label class="form-label" for="about_vision_en">Vision (English)</label>
+              <textarea class="form-control" id="about_vision_en" name="about_vision_en" rows="3">{{ old('about_vision_en', setting('about.vision_en')) }}</textarea>
+            </div>
+            <div class="mb-0">
+              <label class="form-label" for="about_mission_en">Mission (English)</label>
+              <textarea class="form-control" id="about_mission_en" name="about_mission_en" rows="6"
+                        placeholder="Prime Quality : Providing furniture and interior renovation…">{{ old('about_mission_en', setting('about.mission_en')) }}</textarea>
+              <div class="form-text">Format <code>Title : Description</code>, satu poin per baris.</div>
+            </div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="card-header">
             <h5 class="mb-1">Angka Pencapaian</h5>
@@ -98,6 +137,10 @@
                            value="{{ old("about_stat{$i}_label", setting("about.stat{$i}_label")) }}"
                            placeholder="{{ ['Proyek Selesai', 'Tahun Pengalaman', 'Klien Puas', 'Tim Desainer'][$i - 1] }}" />
                   </div>
+
+                  <input type="text" class="form-control mt-2" name="about_stat{{ $i }}_label_en"
+                         value="{{ old("about_stat{$i}_label_en", setting("about.stat{$i}_label_en")) }}"
+                         placeholder="{{ ['Projects Completed', 'Years of Experience', 'Clients Recommend Us', 'Professional Team'][$i - 1] }} (English)" />
                 </div>
               @endfor
             </div>

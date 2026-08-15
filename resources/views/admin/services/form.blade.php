@@ -112,6 +112,19 @@
             <div class="form-text">Pisahkan antar paragraf dengan baris kosong. Opsional.</div>
           </div>
         </div>
+
+        @include('admin.partials.translation-card', [
+            'model'  => $service,
+            'fields' => [
+                'title'       => ['Package Name', 'text', 'Silver Package'],
+                'subtitle'    => ['Package Caption', 'text', 'Design Only'],
+                'price'       => ['Price', 'text', 'From IDR 350,000 / m²'],
+                'excerpt'     => ['Summary', 'textarea', 'A short line shown under the package name.'],
+                'features'    => ['Package Contents', 'textarea-lg', "Initial concept consultation.
+Room layout (2D Layout Plan)."],
+                'description' => ['Full Description', 'textarea', 'Longer explanation shown on the package detail page.'],
+            ],
+        ])
       </div>
 
       <div class="col-lg-4">

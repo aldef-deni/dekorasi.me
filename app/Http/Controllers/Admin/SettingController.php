@@ -49,6 +49,11 @@ class SettingController extends Controller
             'social_linkedin'  => ['nullable', 'string', 'max:255'],
 
             'seo_title'    => ['nullable', 'string', 'max:150'],
+
+            // Versi bahasa Inggris
+            'site_tagline_en'     => ['nullable', 'string', 'max:200'],
+            'site_description_en' => ['nullable', 'string', 'max:500'],
+            'seo_title_en'        => ['nullable', 'string', 'max:150'],
             'seo_keywords' => ['nullable', 'string', 'max:300'],
 
             'site_logo'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],

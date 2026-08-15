@@ -32,6 +32,13 @@ class AboutController extends Controller
             'about_vision'   => ['nullable', 'string', 'max:1000'],
             'about_mission'  => ['nullable', 'string', 'max:2000'],
 
+            // Versi bahasa Inggris
+            'about_heading_en'  => ['nullable', 'string', 'max:150'],
+            'about_subtitle_en' => ['nullable', 'string', 'max:250'],
+            'about_body_en'     => ['nullable', 'string', 'max:8000'],
+            'about_vision_en'   => ['nullable', 'string', 'max:1000'],
+            'about_mission_en'  => ['nullable', 'string', 'max:2000'],
+
             'about_stat1_value' => ['nullable', 'string', 'max:20'],
             'about_stat1_label' => ['nullable', 'string', 'max:60'],
             'about_stat2_value' => ['nullable', 'string', 'max:20'],
@@ -40,6 +47,11 @@ class AboutController extends Controller
             'about_stat3_label' => ['nullable', 'string', 'max:60'],
             'about_stat4_value' => ['nullable', 'string', 'max:20'],
             'about_stat4_label' => ['nullable', 'string', 'max:60'],
+
+            'about_stat1_label_en' => ['nullable', 'string', 'max:60'],
+            'about_stat2_label_en' => ['nullable', 'string', 'max:60'],
+            'about_stat3_label_en' => ['nullable', 'string', 'max:60'],
+            'about_stat4_label_en' => ['nullable', 'string', 'max:60'],
 
             'about_image'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'about_image_secondary' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],

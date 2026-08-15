@@ -35,7 +35,8 @@ class SliderController extends Controller
             $data['image'] = $this->images->store($request->file('image'), 'sliders');
         }
 
-        Slider::create($data);
+        $slider = Slider::create($data);
+        $this->simpanTerjemahan($slider, $request);
 
         return redirect()->route('admin.sliders.index')->with('success', 'Slide berhasil ditambahkan.');
     }
@@ -54,6 +55,7 @@ class SliderController extends Controller
         }
 
         $slider->update($data);
+        $this->simpanTerjemahan($slider, $request);
 
         return redirect()->route('admin.sliders.index')->with('success', 'Slide berhasil diperbarui.');
     }
@@ -90,5 +92,12 @@ class SliderController extends Controller
         $data['is_active']  = $request->boolean('is_active');
 
         return $data;
+    }
+
+    /** Simpan versi Inggris dari kolom yang bisa diterjemahkan. */
+    private function simpanTerjemahan(\Illuminate\Database\Eloquent\Model $model, Request $request): void
+    {
+        $model->setTranslation('en', (array) $request->input('en', []));
+        $model->save();
     }
 }

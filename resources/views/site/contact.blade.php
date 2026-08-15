@@ -1,19 +1,19 @@
 @extends('layouts.site')
 
-@section('meta-title', 'Kontak — ' . setting('site.name', 'Dekorasi.me'))
-@section('meta-description', 'Hubungi kami untuk konsultasi desain interior. Alamat, telepon, email, dan WhatsApp.')
+@section('meta-title', __('site.contact.title') . ' — ' . setting('site.name', 'Dekorasi.me'))
+@section('meta-description', __('site.contact.meta_description'))
 
 @section('content')
 
   <section class="page-hero with-image" style="--hero-image:url('{{ banner_url('contact') }}')">
     <div class="wrap">
       <div class="breadcrumbs">
-        <a href="{{ route('home') }}">Beranda</a> <span>/</span> <span>Kontak</span>
+        <a href="{{ route('home') }}">{{ __('site.common.home') }}</a> <span>/</span> <span>{{ __('site.nav.contact') }}</span>
       </div>
-      <span class="eyebrow">Mari Bicara</span>
-      <h1 class="gold-text">Hubungi Kami</h1>
+      <span class="eyebrow">{{ __('site.contact.eyebrow') }}</span>
+      <h1 class="gold-text">{{ __('site.contact.title') }}</h1>
       <p class="lead" style="margin-top:1.2rem">
-        Ceritakan ruang yang ingin Anda ubah. Kami balas secepatnya di jam kerja.
+        {{ __('site.contact.lead') }}
       </p>
     </div>
   </section>
@@ -23,11 +23,11 @@
       @php
           $siteName = setting('site.name', 'Dekorasi.me');
           $channels = array_filter([
-              ['label' => 'Alamat',   'value' => setting('contact.address'), 'href' => null,  'icon' => 'pin'],
-              ['label' => 'Telepon',  'value' => setting('contact.phone'),   'href' => setting('contact.phone') ? 'tel:'.preg_replace('/\s+/', '', setting('contact.phone')) : null, 'icon' => 'phone'],
-              ['label' => 'Email',    'value' => setting('contact.email'),   'href' => setting('contact.email') ? 'mailto:'.setting('contact.email') : null, 'icon' => 'mail'],
-              ['label' => 'WhatsApp', 'value' => setting('contact.whatsapp'),'href' => setting('contact.whatsapp') ? whatsapp_url(setting('contact.whatsapp'), 'Halo '.$siteName.', saya ingin konsultasi desain interior.') : null, 'icon' => 'wa'],
-              ['label' => 'Jam Operasional', 'value' => setting('contact.hours'), 'href' => null, 'icon' => 'clock'],
+              ['label' => __('site.contact.address'),   'value' => setting('contact.address'), 'href' => null,  'icon' => 'pin'],
+              ['label' => __('site.contact.phone'),  'value' => setting('contact.phone'),   'href' => setting('contact.phone') ? 'tel:'.preg_replace('/\s+/', '', setting('contact.phone')) : null, 'icon' => 'phone'],
+              ['label' => __('site.contact.email'),    'value' => setting('contact.email'),   'href' => setting('contact.email') ? 'mailto:'.setting('contact.email') : null, 'icon' => 'mail'],
+              ['label' => __('site.contact.whatsapp'), 'value' => setting('contact.whatsapp'),'href' => setting('contact.whatsapp') ? whatsapp_url(setting('contact.whatsapp'), __('site.cta.wa_message', ['site' => $siteName])) : null, 'icon' => 'wa'],
+              ['label' => __('site.contact.hours'), 'value' => setting('contact.hours'), 'href' => null, 'icon' => 'clock'],
           ], fn ($channel) => filled($channel['value']));
       @endphp
 
@@ -67,7 +67,7 @@
         </div>
       @else
         <p class="lead" style="text-align:center">
-          Informasi kontak sedang dilengkapi. Silakan cek kembali sebentar lagi.
+          {{ __('site.contact.empty') }}
         </p>
       @endif
 
@@ -75,13 +75,13 @@
 
       @if ($peta)
         <div class="map-block reveal" id="peta">
-          <iframe src="{{ $peta }}" title="Lokasi {{ $siteName }}"
+          <iframe src="{{ $peta }}" title="{{ __('site.contact.map_title', ['site' => $siteName]) }}"
                   loading="lazy" allowfullscreen
                   referrerpolicy="no-referrer-when-downgrade"></iframe>
 
           {{-- Kartu alamat mengambang di atas peta --}}
           <div class="map-card">
-            <span class="eyebrow">Lokasi Kami</span>
+            <span class="eyebrow">{{ __('site.contact.our_location') }}</span>
             <h3>{{ $siteName }}</h3>
 
             @if (setting('contact.address'))
@@ -102,10 +102,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="16" height="16">
                   <path d="m3 11 18-8-8 18-2-8-8-2Z"/>
                 </svg>
-                Petunjuk Arah
+                {{ __('site.contact.directions') }}
               </a>
               <a class="btn btn-ghost" href="{{ maps_link_url() }}" target="_blank" rel="noopener">
-                Buka di Maps
+                {{ __('site.contact.open_maps') }}
               </a>
             </div>
           </div>

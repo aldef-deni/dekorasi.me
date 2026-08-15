@@ -2,19 +2,27 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
+    use HasTranslations;
+
+    /** Kolom yang punya versi terjemahan. */
+    protected array $translatable = ['title', 'category', 'excerpt', 'description', 'area'];
+
     protected $fillable = [
+        'translations',
         'title', 'slug', 'category', 'client', 'location', 'area', 'year',
         'excerpt', 'description', 'cover_image',
         'sort_order', 'is_featured', 'is_active',
     ];
 
     protected $casts = [
+        'translations' => 'array',
         'is_active'   => 'boolean',
         'is_featured' => 'boolean',
         'sort_order'  => 'integer',

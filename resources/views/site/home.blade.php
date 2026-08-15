@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('meta-title', setting('seo.title') ?: setting('site.name', 'Dekorasi.me') . ' — ' . setting('site.tagline', 'Desain Interior Premium'))
+@section('meta-title', setting_t('seo.title') ?: setting('site.name', 'Dekorasi.me') . ' — ' . setting_t('site.tagline', __('site.hero.default_eyebrow')))
 
 @section('content')
 
@@ -21,19 +21,19 @@
     <div class="wrap hero-inner">
       @php $first = $sliders->first(); @endphp
 
-      <span class="eyebrow">{{ $first->subtitle ?? setting('site.tagline', 'Desain Interior Premium') }}</span>
+      <span class="eyebrow">{{ $first?->t('subtitle') ?: setting_t('site.tagline', __('site.hero.default_eyebrow')) }}</span>
 
-      <h1 class="gold-text">{{ $first->title ?? 'Ruang yang Bercerita Tentang Anda' }}</h1>
+      <h1 class="gold-text">{{ $first?->t('title') ?: __('site.hero.default_title') }}</h1>
 
       <p class="lead">
-        {{ $first->description ?? setting('site.description', 'Kami merancang interior yang bukan sekadar indah dipandang, tapi nyaman dihuni — dari konsep, visualisasi 3D, hingga eksekusi di lapangan.') }}
+        {{ $first?->t('description') ?: setting_t('site.description', __('site.hero.default_lead')) }}
       </p>
 
       <div class="hero-actions">
         <a class="btn btn-gold" href="{{ $first?->cta_url ?: route('projects.index') }}">
-          {{ $first?->cta_label ?: 'Lihat Portofolio' }}
+          {{ $first?->t('cta_label') ?: __('site.hero.view_portfolio') }}
         </a>
-        <a class="btn btn-ghost" href="{{ route('contact') }}">Konsultasi Gratis</a>
+        <a class="btn btn-ghost" href="{{ route('contact') }}">{{ __('site.hero.free_consult') }}</a>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
       <div class="hero-dots">
         @foreach ($sliders as $slider)
           <button type="button" class="{{ $loop->first ? 'active' : '' }}"
-                  aria-label="Slide {{ $loop->iteration }}"></button>
+                  aria-label="{{ __('site.hero.slide', ['number' => $loop->iteration]) }}"></button>
         @endforeach
       </div>
     @endif
@@ -52,11 +52,10 @@
     <section id="layanan">
       <div class="wrap">
         <div class="section-head center reveal">
-          <span class="eyebrow">Pilih Sesuai Kebutuhan</span>
-          <h2>Paket <span class="gold-text">Layanan</span></h2>
+          <span class="eyebrow">{{ __('site.services.home_eyebrow') }}</span>
+          <h2>{!! __('site.services.home_title', ['highlight' => '<span class="gold-text">'.__('site.services.home_highlight').'</span>']) !!}</h2>
           <p class="lead" style="margin-inline:auto">
-            Pilihan paket fleksibel yang dapat disesuaikan dengan kebutuhan dan
-            anggaran proyek Anda.
+            {{ __('site.services.lead') }}
           </p>
         </div>
 
@@ -86,15 +85,15 @@
         </div>
 
         <div class="reveal">
-          <span class="eyebrow">Tentang Kami</span>
-          <h2>{{ setting('about.heading', 'Detail Kecil, Dampak Besar') }}</h2>
+          <span class="eyebrow">{{ __('site.about.home_eyebrow') }}</span>
+          <h2>{{ setting_t('about.heading', __('site.about.default_heading')) }}</h2>
           <p class="lead" style="margin-block:1.2rem 1.6rem">
-            {{ setting('about.subtitle', 'Kami percaya interior yang baik lahir dari mendengarkan — memahami cara Anda hidup, bekerja, dan menerima tamu, lalu menerjemahkannya menjadi ruang.') }}
+            {{ setting_t('about.subtitle', __('site.about.default_lead')) }}
           </p>
 
           @php
               $stats = collect(range(1, 4))
-                  ->map(fn ($i) => ['value' => setting("about.stat{$i}_value"), 'label' => setting("about.stat{$i}_label")])
+                  ->map(fn ($i) => ['value' => setting("about.stat{$i}_value"), 'label' => setting_t("about.stat{$i}_label")])
                   ->filter(fn ($stat) => filled($stat['value']));
           @endphp
 
@@ -109,7 +108,7 @@
             </div>
           @endif
 
-          <a class="btn btn-ghost" href="{{ route('about') }}">Kenali Kami Lebih Jauh</a>
+          <a class="btn btn-ghost" href="{{ route('about') }}">{{ __('site.about.know_more') }}</a>
         </div>
       </div>
     </div>
@@ -120,8 +119,8 @@
     <section id="portofolio">
       <div class="wrap">
         <div class="section-head center reveal">
-          <span class="eyebrow">Portofolio Pilihan</span>
-          <h2>Proyek yang Sudah <span class="gold-text">Kami Wujudkan</span></h2>
+          <span class="eyebrow">{{ __('site.projects.home_eyebrow') }}</span>
+          <h2>{!! __('site.projects.home_title', ['highlight' => '<span class="gold-text">'.__('site.projects.home_highlight').'</span>']) !!}</h2>
         </div>
 
         <div class="project-grid">
@@ -131,7 +130,7 @@
         </div>
 
         <div style="text-align:center;margin-top:48px" class="reveal">
-          <a class="btn btn-ghost" href="{{ route('projects.index') }}">Lihat Semua Proyek</a>
+          <a class="btn btn-ghost" href="{{ route('projects.index') }}">{{ __('site.projects.view_all') }}</a>
         </div>
       </div>
     </section>
@@ -154,11 +153,10 @@
   <section class="group-section">
     <div class="wrap">
       <div class="section-head center reveal">
-        <span class="eyebrow">Satu Keluarga Usaha</span>
-        <h2>Group <span class="gold-text">Kami</span></h2>
+        <span class="eyebrow">{{ __('site.group.eyebrow') }}</span>
+        <h2>{!! __('site.group.title', ['highlight' => '<span class="gold-text">'.__('site.group.highlight').'</span>']) !!}</h2>
         <p class="lead" style="margin-inline:auto">
-          Dekorasi.me bertumbuh bersama unit usaha lain yang saling melengkapi —
-          dari strategi bisnis, konstruksi, hingga perhotelan.
+          {{ __('site.group.lead') }}
         </p>
       </div>
 

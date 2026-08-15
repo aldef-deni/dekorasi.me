@@ -42,6 +42,27 @@ if (! function_exists('upload_url')) {
     }
 }
 
+if (! function_exists('setting_t')) {
+    /**
+     * Pengaturan yang mengikuti bahasa aktif.
+     *
+     * Terjemahan disimpan pada key berakhiran "_<kode bahasa>", mis.
+     * "about.body_en". Bila kosong, otomatis mundur ke bahasa utama.
+     */
+    function setting_t(string $key, mixed $default = null): mixed
+    {
+        if (app()->getLocale() !== \App\Http\Middleware\SetLocale::PRIMARY) {
+            $terjemahan = setting($key.'_'.app()->getLocale());
+
+            if (filled($terjemahan)) {
+                return $terjemahan;
+            }
+        }
+
+        return setting($key, $default);
+    }
+}
+
 if (! function_exists('maps_embed_url')) {
     /**
      * URL peta untuk disematkan di halaman Kontak.

@@ -65,6 +65,16 @@
 
           </div>
         </div>
+
+        @include('admin.partials.translation-card', [
+            'model'  => $slider,
+            'fields' => [
+                'title'       => ['Title', 'text', 'Spaces That Tell Your Story'],
+                'subtitle'    => ['Subtitle', 'text', 'Premium Interior Design'],
+                'description' => ['Description', 'textarea', 'One or two sentences describing your strength.'],
+                'cta_label'   => ['Button Label', 'text', 'View Portfolio'],
+            ],
+        ])
       </div>
 
       <div class="col-lg-4">

@@ -7,25 +7,25 @@
 
 <article class="pkg reveal {{ $service->is_featured ? 'featured' : '' }}">
   @if ($service->is_featured)
-    <span class="pkg-badge">Paling Diminati</span>
+    <span class="pkg-badge">{{ __('site.services.popular') }}</span>
   @endif
 
   <span class="pkg-icon">
     @include('site.partials.service-icon', ['icon' => $service->icon])
   </span>
 
-  <h3 class="pkg-name">{{ $service->title }}</h3>
+  <h3 class="pkg-name">{{ $service->t('title') }}</h3>
 
-  @if ($service->subtitle)
-    <div class="pkg-sub">{{ $service->subtitle }}</div>
+  @if ($service->t('subtitle'))
+    <div class="pkg-sub">{{ $service->t('subtitle') }}</div>
   @endif
 
-  @if ($service->excerpt)
-    <p class="pkg-excerpt">{{ $service->excerpt }}</p>
+  @if ($service->t('excerpt'))
+    <p class="pkg-excerpt">{{ $service->t('excerpt') }}</p>
   @endif
 
-  @if ($service->price)
-    <div class="pkg-price">{{ $service->price }}</div>
+  @if ($service->t('price'))
+    <div class="pkg-price">{{ $service->t('price') }}</div>
   @endif
 
   @if ($fitur->isNotEmpty())
@@ -38,6 +38,6 @@
 
   <a href="{{ route('services.show', $service) }}"
      class="btn {{ $service->is_featured ? 'btn-gold' : 'btn-ghost' }}">
-    Lihat Detail Paket
+    {{ __('site.services.view_detail') }}
   </a>
 </article>
