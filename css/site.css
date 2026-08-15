@@ -1010,12 +1010,17 @@ section {
 
 /* Banner berfoto: cukup tinggi agar terbaca sebagai banner, dengan selubung
    terang di sisi kiri supaya teks gelap tetap jelas di atas foto apa pun. */
+/* Banner berfoto.
+ *
+ * Foto sengaja dibiarkan tampil UTUH — tidak ditutup selubung terang seperti
+ * sebelumnya. Keterbacaan teks dijaga oleh gradasi gelap tipis yang hanya
+ * pekat di bagian bawah, tempat teks berada, dan hilang sama sekali di
+ * bagian atas sehingga foto tetap terlihat jelas. */
 .page-hero.with-image {
-  min-height: clamp(300px, 40vh, 440px);
+  min-height: clamp(400px, 54vh, 580px);
   display: flex;
-  align-items: center;
-  /* Peralihan ke bawah sudah ditangani gradien; border malah menyisakan
-     garis potong yang tegas. */
+  align-items: flex-end;
+  padding-block: clamp(56px, 7vw, 84px);
   border-bottom: 0;
 }
 
@@ -1035,16 +1040,55 @@ section {
   position: absolute;
   inset: 0;
   background:
-    /* Peralihan halus ke warna halaman di bagian bawah */
-    linear-gradient(to top, var(--bg) 0%, rgba(251, 250, 247, 0) 34%),
-    /* Selubung utama dari kiri */
+    /* Sapuan gelap dari bawah — pekat tepat di belakang teks, sirna di atas */
+    linear-gradient(
+      to top,
+      rgba(16, 14, 11, 0.86) 0%,
+      rgba(16, 14, 11, 0.62) 24%,
+      rgba(16, 14, 11, 0.28) 48%,
+      rgba(16, 14, 11, 0.06) 72%,
+      rgba(16, 14, 11, 0) 100%
+    ),
+    /* Sedikit dari kiri agar judul panjang tetap aman di layar lebar */
     linear-gradient(
       100deg,
-      rgba(251, 250, 247, 0.97) 0%,
-      rgba(251, 250, 247, 0.9) 38%,
-      rgba(251, 250, 247, 0.5) 72%,
-      rgba(251, 250, 247, 0.22) 100%
+      rgba(16, 14, 11, 0.34) 0%,
+      rgba(16, 14, 11, 0.12) 45%,
+      rgba(16, 14, 11, 0) 75%
     );
+}
+
+/* ---- Teks di atas foto: terang, dengan aksen emas ---- */
+
+.page-hero.with-image .breadcrumbs {
+  color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+.page-hero.with-image .breadcrumbs a:hover { color: var(--gold-lite); }
+
+.page-hero.with-image .eyebrow {
+  color: var(--gold-lite);
+  /* Eyebrow tipis dan berukuran kecil — bayangan menjaganya tetap terbaca
+     bila kebetulan jatuh di bagian foto yang terang. */
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+}
+.page-hero.with-image .eyebrow::before { background: var(--gold-lite); }
+
+.page-hero.with-image h1 {
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Judul memakai kelas .gold-text; di atas foto dipakai emas terang
+   agar tetap kontras terhadap latar gelap. */
+.page-hero.with-image h1.gold-text {
+  color: var(--gold-lite);
+}
+
+.page-hero.with-image .lead {
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
 }
 
 .page-hero .wrap { position: relative; z-index: 2; }
@@ -1583,17 +1627,22 @@ section {
     );
   }
 
-  /* Banner halaman: selubung dari atas, bukan dari kiri — di layar sempit
-     teks memakai seluruh lebar sehingga gradien kiri tidak lagi memadai. */
+  /* Banner halaman di layar sempit: teks memakai seluruh lebar, jadi
+     gradasi bawah dipekatkan sedikit dan sapuan kiri ditiadakan. */
+  .page-hero.with-image {
+    min-height: clamp(320px, 46vh, 420px);
+    padding-block: clamp(40px, 8vw, 56px);
+  }
+
   .page-hero.with-image::after {
-    background:
-      linear-gradient(to top, var(--bg) 0%, rgba(251, 250, 247, 0) 30%),
-      linear-gradient(
-        180deg,
-        rgba(251, 250, 247, 0.93) 0%,
-        rgba(251, 250, 247, 0.88) 60%,
-        rgba(251, 250, 247, 0.78) 100%
-      );
+    background: linear-gradient(
+      to top,
+      rgba(16, 14, 11, 0.9) 0%,
+      rgba(16, 14, 11, 0.68) 30%,
+      rgba(16, 14, 11, 0.32) 58%,
+      rgba(16, 14, 11, 0.08) 80%,
+      rgba(16, 14, 11, 0) 100%
+    );
   }
 
   .split-media.stacked .secondary {
