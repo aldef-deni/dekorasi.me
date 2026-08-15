@@ -40,6 +40,24 @@ class Diagnosa extends Command
             $masalah++;
         }
 
+        // Sisa domain lama pada konten yang diketik lewat dashboard.
+        $host = parse_url($appUrl, PHP_URL_HOST);
+
+        if ($host) {
+            $sisa = $this->cariDomainLain($host);
+
+            if ($sisa->isNotEmpty()) {
+                $this->warn('   [PERHATIAN] Ada konten yang masih menyebut domain lain:');
+
+                foreach ($sisa as $domain => $jumlah) {
+                    $this->line("             {$domain} ({$jumlah} nilai)");
+                }
+
+                $this->line('             Perbaiki dengan:');
+                $this->line("             php artisan dekorasi:ganti-domain <domain-lama> {$host} --terapkan");
+            }
+        }
+
         $this->newLine();
 
         // --- 2. Folder unggahan ----------------------------------------------
@@ -193,5 +211,42 @@ class Diagnosa extends Command
         $this->line('  404 = berkas tidak ada di server   403 = diblokir .htaccess');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Cari domain selain domain aktif yang masih tersimpan di konten.
+     *
+     * @return \Illuminate\Support\Collection<string, int>
+     */
+    private function cariDomainLain(string $hostAktif): \Illuminate\Support\Collection
+    {
+        $sumber = collect();
+
+        try {
+            $sumber = $sumber
+                ->merge(\App\Models\Setting::pluck('value'))
+                ->merge(\App\Models\Slider::pluck('cta_url'))
+                ->merge(\App\Models\Slider::pluck('translations'))
+                ->merge(\App\Models\Service::pluck('description'))
+                ->merge(\App\Models\Project::pluck('description'));
+        } catch (\Throwable) {
+            return collect();
+        }
+
+        return $sumber
+            ->filter(fn ($nilai) => is_string($nilai))
+            ->flatMap(fn (string $nilai) => preg_match_all('~https?://([a-z0-9.-]+)~i', $nilai, $c) ? $c[1] : [])
+            ->map(fn (string $domain) => strtolower($domain))
+            // Abaikan domain aktif dan layanan pihak ketiga yang wajar muncul.
+            ->reject(fn (string $domain) => $domain === strtolower($hostAktif)
+                || str_contains($domain, 'google.')
+                || str_contains($domain, 'instagram.')
+                || str_contains($domain, 'facebook.')
+                || str_contains($domain, 'tiktok.')
+                || str_contains($domain, 'youtube.')
+                || str_contains($domain, 'linkedin.')
+                || str_contains($domain, 'wa.me'))
+            ->countBy()
+            ->sortDesc();
     }
 }

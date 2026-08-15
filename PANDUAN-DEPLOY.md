@@ -38,7 +38,7 @@ cPanel &rsaquo; MySQL Databases:
 APP_NAME="Dekorasi.me"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://dev.dekorasi.me
+APP_URL=https://dekorasi.me
 
 DB_CONNECTION=mysql
 DB_HOST=localhost
@@ -48,8 +48,13 @@ DB_USERNAME=dekn3383_xxxxx
 DB_PASSWORD=kata-sandi-database
 ```
 
-`APP_URL` harus benar — nilai inilah yang dipakai untuk membentuk URL gambar
-yang diunggah lewat dashboard.
+`APP_URL` harus benar — nilai inilah yang dipakai untuk membentuk **seluruh
+URL**: gambar unggahan, tautan halaman, dan tag SEO. Tulis tanpa garis miring
+di akhir, dan gunakan `https://` bila domain sudah ber-SSL.
+
+> **Pindah domain?** Setelah mengubah `APP_URL`, wajib jalankan
+> `php artisan optimize:clear`. Selama config masih ter-cache, seluruh URL
+> tetap memakai domain lama. Lihat bagian *Pindah domain* di bawah.
 
 Lalu buat application key:
 
@@ -161,6 +166,36 @@ Kalau ada perubahan tak muncul, jalankan `php artisan optimize:clear` dulu.
 ```bash
 chmod -R 775 storage bootstrap/cache
 ```
+
+---
+
+## Pindah domain
+
+Misalnya dari `dev.dekorasi.me` ke `dekorasi.me`:
+
+```bash
+# 1. Ubah APP_URL di .env menjadi domain baru
+#    APP_URL=https://dekorasi.me
+
+# 2. Bersihkan cache — WAJIB, tanpa ini URL lama masih dipakai
+php artisan optimize:clear
+
+# 3. Periksa konten yang mungkin masih menyebut domain lama
+php artisan dekorasi:ganti-domain dev.dekorasi.me dekorasi.me
+
+# 4. Bila ada yang ditemukan, simpan perubahannya
+php artisan dekorasi:ganti-domain dev.dekorasi.me dekorasi.me --terapkan
+
+# 5. Pastikan semuanya sehat
+php artisan dekorasi:diagnosa
+```
+
+**Kenapa langkah 3 perlu?** URL gambar dan tautan halaman dibangun otomatis
+dari `APP_URL`, jadi ikut berubah sendiri. Yang tidak ikut adalah teks yang
+Anda ketik sendiri lewat dashboard — tautan tombol slider, kode embed peta,
+atau tautan di dalam deskripsi. Perintah itu memindainya.
+
+Perintah tanpa `--terapkan` hanya menampilkan pratinjau, tidak mengubah apa pun.
 
 ---
 

@@ -24,7 +24,7 @@
   <meta property="og:title" content="{{ $metaTitle }}" />
   <meta property="og:description" content="{{ $metaDesc }}" />
   <meta property="og:url" content="{{ url()->current() }}" />
-  <meta property="og:image" content="{{ upload_url(setting('seo.og_image'), asset('img/brand/logo.png')) }}" />
+  <meta property="og:image" content="{{ absolute_url(upload_url(setting('seo.og_image'), asset('img/brand/logo.png'))) }}" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -63,6 +63,9 @@
 
     // Menu mobile.
     (function () {
+      const LABEL_BUKA  = @json(__('site.nav.open_menu'));
+      const LABEL_TUTUP = @json(__('site.nav.close_menu'));
+
       const toggle = document.querySelector('.nav-toggle');
       const nav = document.querySelector('.nav');
       const backdrop = document.querySelector('.nav-backdrop');
@@ -72,7 +75,7 @@
         nav.classList.toggle('open', open);
         backdrop.classList.toggle('open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+        toggle.setAttribute('aria-label', open ? LABEL_TUTUP : LABEL_BUKA);
         document.body.style.overflow = open ? 'hidden' : '';
       };
 

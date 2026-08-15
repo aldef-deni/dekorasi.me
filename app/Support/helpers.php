@@ -42,6 +42,28 @@ if (! function_exists('upload_url')) {
     }
 }
 
+if (! function_exists('absolute_url')) {
+    /**
+     * Jadikan URL absolut bila masih relatif.
+     *
+     * URL gambar sengaja disimpan root-relatif ("/uploads/...") supaya tidak
+     * terikat domain. Sebagian tempat tetap butuh bentuk absolut — og:image
+     * dan canonical, karena dibaca mesin di luar situs.
+     */
+    function absolute_url(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, 'data:')) {
+            return $url;
+        }
+
+        return url($url);
+    }
+}
+
 if (! function_exists('setting_t')) {
     /**
      * Pengaturan yang mengikuti bahasa aktif.

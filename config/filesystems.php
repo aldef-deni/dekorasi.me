@@ -52,7 +52,13 @@ return [
             // Keamanan: folder uploads punya .htaccess sendiri yang mematikan
             // eksekusi skrip, dan unggahan sudah divalidasi hanya berupa gambar.
             'root' => base_path('uploads'),
-            'url' => env('APP_URL').'/uploads',
+            // URL sengaja ROOT-RELATIF ("/uploads"), bukan absolut dari APP_URL.
+            //
+            // Dengan begitu gambar tetap tampil di domain mana pun tanpa perlu
+            // mengubah konfigurasi — termasuk saat pindah dari subdomain
+            // pengembangan ke domain utama. Kalau memakai APP_URL, seluruh
+            // gambar langsung mati begitu domain lama dihapus.
+            'url' => '/uploads',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
