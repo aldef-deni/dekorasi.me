@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
 class Banner
 {
     /** Urutan ini menentukan gambar mana yang dipakai tiap halaman. */
-    public const PAGES = ['about', 'services', 'projects', 'contact'];
+    public const PAGES = ['about', 'services', 'projects', 'properties', 'contact'];
 
     /** Cache per-request agar kumpulan gambar tidak diambil berulang kali. */
     protected static ?Collection $pool = null;

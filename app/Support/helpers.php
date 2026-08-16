@@ -236,3 +236,49 @@ if (! function_exists('whatsapp_url')) {
         return 'https://wa.me/'.$digits.($message ? '?text='.rawurlencode($message) : '');
     }
 }
+
+if (! function_exists('format_rupiah')) {
+    /**
+     * Angka menjadi rupiah penuh, mis. 1500000000 -> "Rp 1.500.000.000".
+     * Pecahan di belakang koma dibuang karena harga properti selalu bulat.
+     */
+    function format_rupiah(float|int|string|null $angka): string
+    {
+        if ($angka === null || $angka === '') {
+            return '';
+        }
+
+        return 'Rp '.number_format((float) $angka, 0, ',', '.');
+    }
+}
+
+if (! function_exists('format_rupiah_ringkas')) {
+    /**
+     * Versi ringkas untuk kartu daftar properti, mis. "Rp 1,5 M" / "Rp 850 Jt".
+     *
+     * Angka panjang membuat kartu jadi sesak, sementara pembeli hanya perlu
+     * gambaran besarannya — nilai penuh tetap tampil di halaman detail.
+     */
+    function format_rupiah_ringkas(float|int|string|null $angka): string
+    {
+        if ($angka === null || $angka === '') {
+            return '';
+        }
+
+        $nilai = (float) $angka;
+
+        [$bagi, $satuan] = match (true) {
+            $nilai >= 1_000_000_000_000 => [1_000_000_000_000, __('site.properties.unit_trillion')],
+            $nilai >= 1_000_000_000     => [1_000_000_000, __('site.properties.unit_billion')],
+            $nilai >= 1_000_000         => [1_000_000, __('site.properties.unit_million')],
+            default                     => [1, ''],
+        };
+
+        $hasil = $nilai / $bagi;
+
+        // Satu angka di belakang koma, dan koma dibuang bila hasilnya bulat.
+        $teks = rtrim(rtrim(number_format($hasil, 1, ',', '.'), '0'), ',');
+
+        return trim('Rp '.$teks.' '.$satuan);
+    }
+}

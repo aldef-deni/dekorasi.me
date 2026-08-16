@@ -4,6 +4,7 @@
         ['route' => 'admin.sliders.index', 'icon' => 'tabler-slideshow',    'label' => 'Slider Beranda', 'pattern' => 'admin/sliders*'],
         ['route' => 'admin.services.index','icon' => 'tabler-package',      'label' => 'Paket Layanan',  'pattern' => 'admin/services*'],
         ['route' => 'admin.projects.index','icon' => 'tabler-building-arch','label' => 'Proyek',         'pattern' => 'admin/projects*'],
+        ['route' => 'admin.properties.index','icon' => 'tabler-home-dollar','label' => 'Properti',     'pattern' => 'admin/properties*'],
         ['route' => 'admin.about.edit',    'icon' => 'tabler-info-circle',  'label' => 'Tentang Kami',   'pattern' => 'admin/about*'],
         ['route' => 'admin.settings.edit', 'icon' => 'tabler-settings',     'label' => 'Pengaturan Situs','pattern' => 'admin/settings*'],
     ];

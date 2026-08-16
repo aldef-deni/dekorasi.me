@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Property;
 use App\Models\Service;
 use App\Models\Slider;
 use Illuminate\Http\Request;
@@ -16,6 +17,8 @@ class SiteController extends Controller
             'sliders'  => Slider::active()->ordered()->get(),
             'services' => Service::active()->ordered()->take(6)->get(),
             'projects' => Project::active()->featured()->ordered()->take(6)->get(),
+            // Properti unggulan; yang sudah terjual tidak ikut tampil di beranda.
+            'properties' => Property::active()->tersedia()->featured()->ordered()->take(6)->get(),
         ]);
     }
 
@@ -85,6 +88,67 @@ class SiteController extends Controller
             'related' => Project::active()
                 ->whereKeyNot($project->id)
                 ->when($project->category, fn ($q) => $q->where('category', $project->category))
+                ->ordered()
+                ->take(3)
+                ->get(),
+        ]);
+    }
+
+    public function properties(Request $request): View
+    {
+        $type   = $request->string('jenis')->toString();
+        $status = $request->string('status')->toString();
+
+        $properties = Property::active()
+            ->when($type, fn ($q) => $q->where('type', $type))
+            ->when($status, fn ($q) => $q->where('listing_status', $status))
+            ->ordered()
+            ->paginate(9)
+            ->withQueryString();
+
+        // Nilai jenis tetap bahasa Indonesia karena dipakai menyaring;
+        // labelnya mengikuti bahasa aktif.
+        $types = Property::active()
+            ->whereNotNull('type')
+            ->orderBy('type')
+            ->get(['id', 'type', 'translations'])
+            ->unique('type')
+            ->map(fn (Property $property) => [
+                'value' => $property->type,
+                'label' => $property->t('type'),
+            ])
+            ->sortBy('label')
+            ->values();
+
+        // Hanya status yang benar-benar dipakai yang ditawarkan sebagai filter.
+        $statuses = Property::active()
+            ->distinct()
+            ->orderBy('listing_status')
+            ->pluck('listing_status')
+            ->map(fn (string $kode) => ['value' => $kode, 'label' => __('site.properties.status.'.$kode)])
+            ->values();
+
+        return view('site.properties', [
+            'properties'   => $properties,
+            'types'        => $types,
+            'statuses'     => $statuses,
+            'activeType'   => $type,
+            'activeStatus' => $status,
+        ]);
+    }
+
+    public function propertyDetail(Property $property): View
+    {
+        abort_unless($property->is_active, 404);
+
+        $property->load('images');
+
+        return view('site.property-detail', [
+            'property' => $property,
+            'related'  => Property::active()
+                ->tersedia()
+                ->whereKeyNot($property->id)
+                ->when($property->type, fn ($q) => $q->where('type', $property->type))
                 ->ordered()
                 ->take(3)
                 ->get(),

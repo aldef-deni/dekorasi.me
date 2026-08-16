@@ -11,12 +11,13 @@
             ['label' => 'Total Proyek',    'value' => $stats['projects'],       'icon' => 'tabler-building-arch', 'route' => 'admin.projects.index'],
             ['label' => 'Proyek Tampil',   'value' => $stats['projectsActive'], 'icon' => 'tabler-eye',           'route' => 'admin.projects.index'],
             ['label' => 'Paket Layanan',   'value' => $stats['services'],       'icon' => 'tabler-package',       'route' => 'admin.services.index'],
+            ['label' => 'Properti',        'value' => $stats['properties'],     'icon' => 'tabler-home-dollar',   'route' => 'admin.properties.index'],
             ['label' => 'Slide Aktif',     'value' => $stats['sliders'],        'icon' => 'tabler-slideshow',     'route' => 'admin.sliders.index'],
         ];
     @endphp
 
     @foreach ($cards as $card)
-      <div class="col-sm-6 col-xl-3">
+      <div class="col-sm-6 col-xl">
         <a href="{{ route($card['route']) }}" class="text-decoration-none">
           <div class="card stat-card h-100">
             <div class="card-body d-flex align-items-center justify-content-between">
@@ -104,6 +105,9 @@
           </a>
           <a href="{{ route('admin.services.index') }}" class="btn btn-label-primary d-flex align-items-center justify-content-start gap-2">
             <i class="icon-base ti tabler-package"></i> Kelola Paket Layanan
+          </a>
+          <a href="{{ route('admin.properties.index') }}" class="btn btn-label-primary d-flex align-items-center justify-content-start gap-2">
+            <i class="icon-base ti tabler-home-dollar"></i> Kelola Properti
           </a>
           <a href="{{ route('admin.about.edit') }}" class="btn btn-label-primary d-flex align-items-center justify-content-start gap-2">
             <i class="icon-base ti tabler-info-circle"></i> Edit Tentang Kami

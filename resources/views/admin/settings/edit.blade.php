@@ -179,6 +179,7 @@
                       'banner_about'    => ['Tentang Kami',  'banner.about',    'about'],
                       'banner_services' => ['Paket Layanan', 'banner.services', 'services.index'],
                       'banner_projects' => ['Portofolio',    'banner.projects', 'projects.index'],
+                      'banner_properties' => ['Properti',    'banner.properties', 'properties.index'],
                       'banner_contact'  => ['Kontak',        'banner.contact',  'contact'],
                   ];
               @endphp

@@ -1150,7 +1150,12 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1px;
-  background: var(--line-soft);
+  /* Latar disamakan dengan sel, bukan warna garis. Bila jumlah item tidak
+     habis dibagi jumlah kolom, sisa ruang di baris terakhir ikut putih —
+     bukan blok abu yang terlihat seperti sel kosong. Garis pemisahnya
+     digambar tiap sel lewat box-shadow, jadi hanya muncul di antara sel
+     yang benar-benar terisi. */
+  background: var(--bg-card);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   overflow: hidden;
@@ -1159,6 +1164,7 @@ section {
 
 .spec-list div {
   background: var(--bg-card);
+  box-shadow: 0 0 0 1px var(--line-soft);
   padding: 24px 22px;
 }
 
@@ -1586,6 +1592,242 @@ section {
 /* Perangkat sentuh tidak punya hover — tampilkan warna aslinya langsung */
 @media (hover: none) {
   .group-logo img { filter: grayscale(0); opacity: 1; }
+}
+
+/* ============================ Properti ============================ */
+
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.property-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--line-soft);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+}
+
+@media (hover: hover) {
+  .property-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--line);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .property-card:hover .property-media img { transform: scale(1.06); }
+}
+
+/* --- Bagian gambar --- */
+
+.property-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+.property-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* Label status & jenis dibuat menempel di sudut gambar */
+.property-status,
+.property-type {
+  position: absolute;
+  inset-block-start: 14px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.property-status {
+  inset-inline-start: 14px;
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(184, 134, 47, 0.35);
+}
+
+/* Terjual / tersewa: warna diredam supaya tidak lagi menarik perhatian. */
+.property-status.is-done {
+  background: rgba(43, 40, 36, 0.82);
+  box-shadow: none;
+}
+
+.property-type {
+  inset-inline-end: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+}
+
+/* --- Bagian teks --- */
+
+.property-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 22px 24px 24px;
+}
+
+.property-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--gold-deep);
+  margin-bottom: 8px;
+}
+
+.property-card h3 {
+  font-size: 1.16rem;
+  line-height: 1.35;
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+.property-loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.property-loc svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--gold); }
+
+/* Ringkasan kamar & luas, dipisah garis tipis di atasnya */
+.property-specs {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 16px 0 0;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line-soft);
+  /* Selalu menempel di dasar kartu supaya antar kartu sejajar walau
+     panjang judulnya berbeda. */
+  margin-block-start: auto;
+}
+
+.property-specs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.86rem;
+  color: var(--text-soft);
+}
+
+.property-specs svg { width: 17px; height: 17px; color: var(--gold); }
+
+/* --- Penyaring di halaman daftar --- */
+
+.property-filters {
+  display: grid;
+  gap: 18px;
+  margin-bottom: clamp(32px, 4vw, 46px);
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* .filters bawaan punya margin bawah 42px untuk dipakai berdiri sendiri di
+   halaman portofolio. Di sini jaraknya sudah diatur .property-filters. */
+.filter-row .filters { margin-bottom: 0; flex: 1; }
+
+.filter-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  min-width: 108px;
+}
+
+/* --- Panel harga di halaman detail --- */
+
+.price-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(24px, 3vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--gold-wash) 0%, var(--bg-card) 68%);
+  box-shadow: var(--shadow-sm);
+}
+
+.price-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 8px;
+}
+
+.price-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.price-badge {
+  display: inline-block;
+  margin-inline-start: 14px;
+  vertical-align: middle;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #fff;
+}
+
+.price-badge.is-done { background: rgba(43, 40, 36, 0.82); }
+
+.price-note {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .property-grid { grid-template-columns: 1fr; gap: 22px; }
+  .property-body { padding: 20px; }
+  .property-price { font-size: 1.34rem; }
+  .property-specs { gap: 14px; }
+  .filter-label { min-width: 100%; }
+  /* Panel harga menumpuk: sisi kanan dibuat selebar penuh dulu, baru
+     tombolnya bisa ikut memenuhi lebar. */
+  .price-panel { flex-direction: column; align-items: stretch; }
+  .price-side { width: 100%; }
+  .price-panel .btn { width: 100%; }
+  .price-badge { margin-inline-start: 0; margin-block-start: 10px; }
 }
 
 /* ============================ Footer ============================ */

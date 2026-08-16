@@ -4,6 +4,7 @@
         ['route' => 'about',           'label' => __('site.nav.about')],
         ['route' => 'services.index',  'label' => __('site.nav.services'),  'pattern' => 'layanan*'],
         ['route' => 'projects.index',  'label' => __('site.nav.projects'),  'pattern' => 'proyek*'],
+        ['route' => 'properties.index','label' => __('site.nav.properties'), 'pattern' => 'properti*'],
         ['route' => 'contact',         'label' => __('site.nav.contact')],
     ];
 

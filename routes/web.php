@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectImageController;
+use App\Http\Controllers\Admin\PropertyController;
+use App\Http\Controllers\Admin\PropertyImageController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
@@ -76,6 +78,8 @@ Route::controller(SiteController::class)->group(function () {
     Route::get('/layanan/{service:slug}', 'serviceDetail')->name('services.show');
     Route::get('/proyek', 'projects')->name('projects.index');
     Route::get('/proyek/{project:slug}', 'projectDetail')->name('projects.show');
+    Route::get('/properti', 'properties')->name('properties.index');
+    Route::get('/properti/{property:slug}', 'propertyDetail')->name('properties.show');
     Route::get('/kontak', 'contact')->name('contact');
 });
 
@@ -104,11 +108,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('sliders', SliderController::class)->except('show');
     Route::resource('services', ServiceController::class)->except('show');
     Route::resource('projects', ProjectController::class)->except('show');
+    Route::resource('properties', PropertyController::class)->except('show');
 
     // Galeri foto proyek
     Route::post('projects/{project}/images', [ProjectImageController::class, 'store'])->name('projects.images.store');
     Route::delete('project-images/{image}', [ProjectImageController::class, 'destroy'])->name('projects.images.destroy');
     Route::post('projects/{project}/images/reorder', [ProjectImageController::class, 'reorder'])->name('projects.images.reorder');
+
+    // Galeri foto properti
+    Route::post('properties/{property}/images', [PropertyImageController::class, 'store'])->name('properties.images.store');
+    Route::delete('property-images/{image}', [PropertyImageController::class, 'destroy'])->name('properties.images.destroy');
+    Route::post('properties/{property}/images/reorder', [PropertyImageController::class, 'reorder'])->name('properties.images.reorder');
 
     // Profil administrator
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

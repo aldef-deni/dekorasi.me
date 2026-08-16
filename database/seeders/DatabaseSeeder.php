@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->seedSliders();
         $this->call(PaketLayananSeeder::class);
         $this->seedProjects();
+        $this->call(PropertiSeeder::class);
     }
 
     private function seedAdmin(): void

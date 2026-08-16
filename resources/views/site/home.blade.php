@@ -136,6 +136,28 @@
     </section>
   @endif
 
+  {{-- ============================ Properti ============================ --}}
+  @if ($properties->isNotEmpty())
+    <section id="properti" style="background:var(--bg-soft);border-block:1px solid var(--line-soft)">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="eyebrow">{{ __('site.properties.home_eyebrow') }}</span>
+          <h2>{!! __('site.properties.home_title', ['highlight' => '<span class="gold-text">'.__('site.properties.home_highlight').'</span>']) !!}</h2>
+        </div>
+
+        <div class="property-grid">
+          @foreach ($properties as $property)
+            @include('site.partials.property-card', ['property' => $property])
+          @endforeach
+        </div>
+
+        <div style="text-align:center;margin-top:48px" class="reveal">
+          <a class="btn btn-ghost" href="{{ route('properties.index') }}">{{ __('site.properties.view_all') }}</a>
+        </div>
+      </div>
+    </section>
+  @endif
+
   {{-- ============================ CTA ============================ --}}
   @include('site.partials.cta')
 

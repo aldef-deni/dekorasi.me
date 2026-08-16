@@ -16,7 +16,7 @@ class SettingController extends Controller
     private const IMAGE_FIELDS = [
         'site.logo', 'site.logo_dark', 'site.favicon', 'seo.og_image',
         // Banner kepala tiap halaman
-        'banner.about', 'banner.services', 'banner.projects', 'banner.contact',
+        'banner.about', 'banner.services', 'banner.projects', 'banner.properties', 'banner.contact',
     ];
 
     public function __construct(private readonly ImageService $images)
@@ -64,6 +64,7 @@ class SettingController extends Controller
             'banner_about'    => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
             'banner_services' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
             'banner_projects' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
+            'banner_properties' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
             'banner_contact'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
         ], [], [
             'site_name'       => 'nama situs',
@@ -75,6 +76,7 @@ class SettingController extends Controller
             'banner_about'    => 'banner Tentang Kami',
             'banner_services' => 'banner Paket Layanan',
             'banner_projects' => 'banner Portofolio',
+            'banner_properties' => 'banner Properti',
             'banner_contact'  => 'banner Kontak',
         ]);
 
