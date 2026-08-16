@@ -123,6 +123,41 @@ p { margin: 0 0 1rem; }
   max-width: 62ch;
 }
 
+/* --- Teks deskriptif: rata kanan-kiri ---------------------------------
+ *
+ * Paragraf penjelasan dibuat rata kanan-kiri supaya tepi kolom lurus dan
+ * halaman terasa lebih tertata.
+ *
+ * Yang ikut hanya paragraf uraian yang memang rata kiri. Blok yang sengaja
+ * dibuat rata tengah — teks hero, ajakan di bagian CTA, dan kepala bagian
+ * bergaya tengah — dikecualikan di aturan berikutnya supaya tetap seperti
+ * semula. Judul, harga, dan teks pendek lain tidak ikut.
+ *
+ * text-wrap: pretty menjaga baris terakhir tidak menyisakan satu kata
+ * sendirian, yang justru merusak kerapian saat teks diratakan.
+ */
+.lead,
+.site-footer p,
+.prose p,
+.mission-item p,
+.card-service p,
+.pkg-excerpt {
+  text-align: justify;
+  text-justify: inter-word;
+  text-wrap: pretty;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* Yang sengaja dibuat rata tengah dikembalikan mengikuti perataan induknya
+ * — perataan kanan-kiri hanya untuk teks yang memang rata kiri. */
+.cta .lead,
+.section-head.center .lead {
+  text-align: inherit;
+  hyphens: manual;
+  -webkit-hyphens: manual;
+}
+
 /* ============================ Layout ============================ */
 
 .wrap {
@@ -1563,9 +1598,14 @@ section {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
-  gap: 40px;
-  padding-bottom: 48px;
+  /* Porsi kolom sengaja digeser: kolom deskripsi dilebarkan dan kolom
+     navigasi sedikit dirampingkan. Jarak antar kolom diambil dari lebar
+     kolom itu sendiri, jadi menambah jarak saja justru membuat deskripsi
+     menyempit dan celah antar katanya melebar. */
+  grid-template-columns: 1.9fr 0.95fr 0.95fr 1.2fr;
+  column-gap: clamp(40px, 4.5vw, 64px);
+  row-gap: 44px;
+  padding-bottom: 52px;
 }
 
 .site-footer h4 {
@@ -1699,7 +1739,7 @@ section {
 /* ============================ Responsif ============================ */
 
 @media (max-width: 900px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; column-gap: 48px; row-gap: 42px; }
 }
 
 @media (max-width: 820px) {
@@ -1840,7 +1880,9 @@ section {
   .group-logo { height: 68px; }
   .group-name { font-size: 0.7rem; letter-spacing: 0.06em; }
 
-  .footer-grid { grid-template-columns: 1fr; gap: 30px; padding-bottom: 36px; }
+  /* Menumpuk satu kolom: jarak antar blok dilebihkan karena tidak ada lagi
+     pemisah kolom, dan deskripsi dibiarkan selebar layar. */
+  .footer-grid { grid-template-columns: 1fr; row-gap: 40px; padding-bottom: 40px; }
   .site-footer { padding-block: 48px 0; }
   .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
 
