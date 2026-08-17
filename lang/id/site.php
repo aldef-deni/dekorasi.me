@@ -135,6 +135,16 @@ return [
         'sold_note'      => 'Properti ini sudah tidak tersedia.',
     ],
 
+    'videos' => [
+        'eyebrow'        => 'Video',
+        'project_title'  => 'Video Proyek',
+        'property_title' => 'Video Properti',
+        'default_title'  => 'Video :number',
+        'play'           => 'Putar :title',
+        'unsupported'    => 'Peramban Anda belum mendukung pemutar video.',
+        'badge'          => 'Ada video',
+    ],
+
     'about' => [
         'eyebrow'        => 'Profil Perusahaan',
         'home_eyebrow'   => 'Tentang Kami',

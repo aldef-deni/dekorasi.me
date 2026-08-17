@@ -38,7 +38,7 @@
   @stack('styles')
 
   <!-- Penyesuaian merek Dekorasi.me -->
-  <link rel="stylesheet" href="{{ asset('css/admin-brand.css') }}?v=6" />
+  <link rel="stylesheet" href="{{ asset('css/admin-brand.css') }}?v=7" />
 
   <!-- Helpers & config wajib dimuat di <head> setelah core CSS -->
   <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>

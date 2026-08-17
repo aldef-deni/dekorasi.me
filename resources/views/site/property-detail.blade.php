@@ -121,6 +121,14 @@
     </section>
   @endif
 
+  @if ($property->videos->isNotEmpty())
+    @include('site.partials.videos', [
+        'videos'  => $property->videos,
+        'eyebrow' => __('site.videos.eyebrow'),
+        'judul'   => __('site.videos.property_title'),
+    ])
+  @endif
+
   @if ($related->isNotEmpty())
     <section style="background:var(--bg-soft);border-block:1px solid var(--line-soft)">
       <div class="wrap">

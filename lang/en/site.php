@@ -135,6 +135,16 @@ return [
         'sold_note'      => 'This property is no longer available.',
     ],
 
+    'videos' => [
+        'eyebrow'        => 'Video',
+        'project_title'  => 'Project Video',
+        'property_title' => 'Property Video',
+        'default_title'  => 'Video :number',
+        'play'           => 'Play :title',
+        'unsupported'    => 'Your browser does not support the video player.',
+        'badge'          => 'Video available',
+    ],
+
     'about' => [
         'eyebrow'        => 'Company Profile',
         'home_eyebrow'   => 'About Us',

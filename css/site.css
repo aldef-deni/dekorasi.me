@@ -1830,6 +1830,104 @@ section {
   .price-badge { margin-inline-start: 0; margin-block-start: 10px; }
 }
 
+/* ============================ Video ============================ */
+
+.video-section { background: var(--bg-soft); border-block: 1px solid var(--line-soft); }
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 28px;
+}
+
+/* Satu video sendirian tidak perlu melebar penuh — dibatasi agar tetap
+   proporsional dan terasa disengaja, bukan sisa kolom. */
+.video-grid.is-single { grid-template-columns: minmax(0, 860px); justify-content: center; }
+
+.video-item { margin: 0; }
+
+.video-item video,
+.video-item iframe,
+.video-embed {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  background: #14120f;
+  box-shadow: var(--shadow-sm);
+}
+
+.video-item video { object-fit: cover; }
+.video-item iframe { border: 0; }
+
+/* --- Sampul video sematan (belum jadi iframe) --- */
+
+.video-embed {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+}
+
+.video-embed img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* Cadangan saat video sematan belum punya gambar sampul */
+.video-blank {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #23201b 0%, #14120f 100%);
+}
+
+.video-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 74px;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(184, 134, 47, 0.92);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.video-play svg { width: 30px; height: 30px; margin-inline-start: 3px; }
+
+@media (hover: hover) {
+  .video-embed:hover {
+    border-color: var(--gold);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .video-embed:hover img { transform: scale(1.05); }
+  .video-embed:hover .video-play { transform: scale(1.09); background: var(--gold); }
+}
+
+.video-embed:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.video-item figcaption {
+  margin-top: 14px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .video-grid { grid-template-columns: 1fr; gap: 22px; }
+  .video-play { width: 60px; height: 60px; }
+  .video-play svg { width: 25px; height: 25px; }
+}
+
 /* ============================ Footer ============================ */
 
 .site-footer {

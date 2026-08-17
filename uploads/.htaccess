@@ -24,8 +24,11 @@ RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .cgi .pl .py .shtml
 
 Options -ExecCGI -Indexes
 
-# Tolak akses ke berkas apa pun selain gambar
-<FilesMatch "\.(?!(jpe?g|png|webp|gif|svg|ico|avif)$)[^.]*$">
+# Tolak akses ke berkas apa pun selain media (gambar & video).
+# Daftar ini harus sejalan dengan rute cadangan /uploads di routes/web.php —
+# bila salah satu diperbarui tanpa yang lain, berkas akan tampil di satu
+# lingkungan tetapi kena 403 di lingkungan lain.
+<FilesMatch "\.(?!(jpe?g|png|webp|gif|svg|ico|avif|mp4)$)[^.]*$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -34,6 +37,18 @@ Options -ExecCGI -Indexes
         Deny from all
     </IfModule>
 </FilesMatch>
+
+# Tipe MIME video, agar peramban mengenali berkas walau server belum
+# memetakannya sendiri.
+<IfModule mod_mime.c>
+    AddType video/mp4 .mp4
+</IfModule>
+
+# Izinkan permintaan sebagian (byte-range) supaya video bisa digeser posisinya
+# tanpa harus mengunduh seluruh berkas lebih dulu.
+<IfModule mod_headers.c>
+    Header set Accept-Ranges bytes
+</IfModule>
 
 # Cache panjang - nama berkas sudah mengandung string acak, jadi aman
 <IfModule mod_expires.c>

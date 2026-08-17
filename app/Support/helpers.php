@@ -282,3 +282,57 @@ if (! function_exists('format_rupiah_ringkas')) {
         return trim('Rp '.$teks.' '.$satuan);
     }
 }
+
+if (! function_exists('batas_unggah_kb')) {
+    /**
+     * Batas ukuran unggahan yang benar-benar diizinkan server, dalam KB.
+     *
+     * Diambil dari setelan PHP yang paling kecil di antara upload_max_filesize
+     * dan post_max_size, dikurangi sedikit sebagai ruang untuk isian lain di
+     * formulir yang sama.
+     *
+     * Dibaca saat berjalan, bukan ditulis tetap di kode, supaya begitu batas
+     * di cPanel dinaikkan sistem langsung mengikuti tanpa perlu diubah lagi.
+     */
+    function batas_unggah_kb(): int
+    {
+        $keBytes = static function (string $nilai): int {
+            $nilai = trim($nilai);
+
+            if ($nilai === '' || $nilai === '0') {
+                return PHP_INT_MAX; // 0 / kosong berarti tanpa batas
+            }
+
+            $angka = (int) $nilai;
+
+            return match (strtolower(substr($nilai, -1))) {
+                'g'     => $angka * 1024 * 1024 * 1024,
+                'm'     => $angka * 1024 * 1024,
+                'k'     => $angka * 1024,
+                default => $angka,
+            };
+        };
+
+        $batas = min(
+            $keBytes((string) ini_get('upload_max_filesize')),
+            $keBytes((string) ini_get('post_max_size'))
+        );
+
+        // Sisakan 512 KB untuk kolom teks, token CSRF, dan batas berkas lainnya.
+        return max(1, (int) floor($batas / 1024) - 512);
+    }
+}
+
+if (! function_exists('ukuran_terbaca')) {
+    /** Ubah jumlah KB menjadi teks yang enak dibaca, mis. 65024 -> "63,5 MB". */
+    function ukuran_terbaca(int $kb): string
+    {
+        if ($kb >= 1024) {
+            $mb = $kb / 1024;
+
+            return rtrim(rtrim(number_format($mb, 1, ',', '.'), '0'), ',').' MB';
+        }
+
+        return $kb.' KB';
+    }
+}

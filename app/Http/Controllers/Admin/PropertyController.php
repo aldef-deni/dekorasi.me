@@ -56,7 +56,7 @@ class PropertyController extends Controller
 
     public function edit(Property $property): View
     {
-        $property->load('images');
+        $property->load(['images', 'videos']);
 
         return view('admin.properties.form', compact('property'));
     }
@@ -80,6 +80,15 @@ class PropertyController extends Controller
         // Berkas gambar dihapus lebih dulu, sebelum barisnya ikut terhapus cascade.
         $this->images->delete($property->cover_image);
         $property->images->each(fn ($image) => $this->images->delete($image->path));
+
+        // Video ikut dibersihkan: berkasnya di folder uploads, barisnya di tabel videos.
+        $property->videos->each(function (\App\Models\Video $video) {
+            if ($video->path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($video->path);
+            }
+            $this->images->delete($video->poster);
+        });
+        $property->videos()->delete();
 
         $property->delete();
 

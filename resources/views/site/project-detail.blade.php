@@ -80,6 +80,14 @@
     </section>
   @endif
 
+  @if ($project->videos->isNotEmpty())
+    @include('site.partials.videos', [
+        'videos'  => $project->videos,
+        'eyebrow' => __('site.videos.eyebrow'),
+        'judul'   => __('site.videos.project_title'),
+    ])
+  @endif
+
   @if ($related->isNotEmpty())
     <section style="background:var(--bg-soft);border-block:1px solid var(--line-soft)">
       <div class="wrap">

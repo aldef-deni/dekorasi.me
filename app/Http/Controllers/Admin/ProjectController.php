@@ -55,7 +55,7 @@ class ProjectController extends Controller
 
     public function edit(Project $project): View
     {
-        $project->load('images');
+        $project->load(['images', 'videos']);
 
         return view('admin.projects.form', compact('project'));
     }
@@ -79,6 +79,15 @@ class ProjectController extends Controller
         // Hapus seluruh berkas gambar sebelum baris database ikut terhapus (cascade).
         $this->images->delete($project->cover_image);
         $project->images->each(fn ($image) => $this->images->delete($image->path));
+
+        // Video ikut dibersihkan: berkasnya di folder uploads, barisnya di tabel videos.
+        $project->videos->each(function (\App\Models\Video $video) {
+            if ($video->path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($video->path);
+            }
+            $this->images->delete($video->poster);
+        });
+        $project->videos()->delete();
 
         $project->delete();
 

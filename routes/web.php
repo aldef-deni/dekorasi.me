@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PropertyImageController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\VideoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -35,10 +36,16 @@ Route::get('uploads/{path}', function (string $path) {
 
     abort_if(str_contains($normalized, '..') || str_starts_with($normalized, '/'), 404);
 
-    // Hanya berkas gambar yang boleh disajikan lewat rute ini.
+    // Hanya berkas media yang boleh disajikan lewat rute ini — tidak ada
+    // satu pun yang bisa dieksekusi server.
     $ekstensi = strtolower(pathinfo($normalized, PATHINFO_EXTENSION));
 
-    abort_unless(in_array($ekstensi, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'ico'], true), 404);
+    $diizinkan = [
+        'jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'ico', // gambar
+        'mp4',                                             // video
+    ];
+
+    abort_unless(in_array($ekstensi, $diizinkan, true), 404);
 
     $disk = Storage::disk('public');
 
@@ -119,6 +126,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('properties/{property}/images', [PropertyImageController::class, 'store'])->name('properties.images.store');
     Route::delete('property-images/{image}', [PropertyImageController::class, 'destroy'])->name('properties.images.destroy');
     Route::post('properties/{property}/images/reorder', [PropertyImageController::class, 'reorder'])->name('properties.images.reorder');
+
+    // Video Proyek & Properti (satu pengelola untuk kedua modul)
+    Route::post('videos/{jenis}/{id}', [VideoController::class, 'store'])
+        ->where('jenis', 'projects|properties')->name('videos.store');
+    Route::post('videos/{jenis}/{id}/reorder', [VideoController::class, 'reorder'])
+        ->where('jenis', 'projects|properties')->name('videos.reorder');
+    Route::delete('videos/{video}', [VideoController::class, 'destroy'])->name('videos.destroy');
 
     // Profil administrator
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

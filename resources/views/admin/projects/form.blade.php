@@ -218,6 +218,13 @@
       </div>
     </div>
   @endif
+  {{-- Video juga baru bisa ditambahkan setelah data punya ID --}}
+  @if ($isEdit)
+    @include('admin.partials.video-manager', [
+      'model' => $project,
+      'jenis' => 'projects',
+    ])
+  @endif
 @endsection
 
 @push('scripts')

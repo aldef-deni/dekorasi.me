@@ -6,6 +6,7 @@ use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Property extends Model
 {
@@ -60,6 +61,11 @@ class Property extends Model
     public function images(): HasMany
     {
         return $this->hasMany(PropertyImage::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function videos(): MorphMany
+    {
+        return $this->morphMany(Video::class, 'videoable')->orderBy('sort_order')->orderBy('id');
     }
 
     public function scopeActive(Builder $query): Builder

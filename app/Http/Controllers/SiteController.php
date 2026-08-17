@@ -81,7 +81,7 @@ class SiteController extends Controller
     {
         abort_unless($project->is_active, 404);
 
-        $project->load('images');
+        $project->load(['images', 'videos']);
 
         return view('site.project-detail', [
             'project' => $project,
@@ -141,7 +141,7 @@ class SiteController extends Controller
     {
         abort_unless($property->is_active, 404);
 
-        $property->load('images');
+        $property->load(['images', 'videos']);
 
         return view('site.property-detail', [
             'property' => $property,
